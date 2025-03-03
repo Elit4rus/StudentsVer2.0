@@ -1,0 +1,122 @@
+﻿<Window x:Class="StudentsVer2._0.View.Windows.Login.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StudentsVer2._0.View.Windows.Login"
+        mc:Ignorable="d"
+        Title="Окно авторизации" Height="900" Width="1440" WindowStartupLocation="CenterScreen" Background="#1A1F25">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="500"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="346"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="4" Grid.Column="1" Text="Вход" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Roboto" FontSize="22" Foreground="White">
+            <TextBlock.TextDecorations>
+                <TextDecoration Location="Underline">
+                    <TextDecoration.Pen>
+                        <Pen Brush="#5367D3" Thickness="2" />
+                    </TextDecoration.Pen>
+                </TextDecoration>
+            </TextBlock.TextDecorations>
+        </TextBlock>
+        <Image Source="/Resource/Image/TextBox.png" Grid.Row="6" Grid.Column="1" Width="420"/>
+        <Grid Grid.Row="6" Grid.Column="1" Width="420">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="42"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <!-- TextBoxLogin -->
+            <TextBox Name="LoginTb" Grid.Column="1" Background="Transparent" Margin="5 0 10 0"/>
+            <TextBlock Grid.Column="1" Text="Логин" FontSize="20" IsHitTestVisible="False" VerticalAlignment="Center" Margin="10 0 10 0" Foreground="#6B6B6B">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Text, ElementName=LoginTb}" Value="">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+            <Image Source="/Resource/Image/email 2.png" Width="28" Height="28"/>
+
+        </Grid>
+        <Image Source="/Resource/Image/TextBox.png" Grid.Row="8" Grid.Column="1" Width="420"/>
+        <Grid Grid.Row="8" Grid.Column="1" Width="420">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="42"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="42"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Name="PasswordTb" Grid.Column="1" Background="Transparent" Margin="5 0 0 0"/>
+            <TextBlock Grid.Column="1" Text="Пароль" FontSize="20" IsHitTestVisible="False" VerticalAlignment="Center" Margin="10 0 10 0" Foreground="#6B6B6B">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Text, ElementName=PasswordTb}" Value="">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+            <Image Source="/Resource/Image/key 1.png" Width="28" Height="28"/>
+        </Grid>
+        <Grid Grid.Row="10" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="140"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="LoginBtn" Click="LoginBtn_Click" Grid.Column="1" Content="Войти" Height="44">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="FontSize" Value="20"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="FontFamily" Value="Roboto"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}"
+                                            CornerRadius="7"
+                                            BorderThickness="2"
+                                            BorderBrush="White">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"></ContentPresenter>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="Foreground" Value="#5367D3"/>
+                                <Setter Property="FontWeight" Value="Medium"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </Grid>
+        <Image Source="/Resource/Image/account.png" Height="60" Width="60" Grid.Column="1" Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+        <TextBlock Text="Система учета студентов" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" FontSize="20" Foreground="White"/>
+    </Grid>
+</Window>

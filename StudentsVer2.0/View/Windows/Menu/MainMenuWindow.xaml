@@ -1,0 +1,115 @@
+﻿<Window x:Class="StudentsVer2._0.View.Windows.Menu.MainMenuWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StudentsVer2._0.View.Windows.Menu"
+        mc:Ignorable="d"
+        Title="Главное окно" Height="1080" Width="1920" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowState="Maximized">
+    <Window.Resources>
+        <Style x:Key="ButtonExit" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="Border" BorderThickness="0" BorderBrush="Black" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <EventTrigger RoutedEvent="PreviewMouseDown">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ThicknessAnimation Storyboard.TargetProperty="Margin"
+                                                            Duration="0:0:0.100" To="1,1,1,1"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+
+                            <EventTrigger RoutedEvent="PreviewMouseUp">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ThicknessAnimation Storyboard.TargetProperty="Margin"
+                                Duration="0:0:0.100" To="0"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="64"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+        <!-- #region Верхнее меню -->
+        <Grid Background="#5367D3">
+            <Grid Margin="20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <!--#region Роль пользователя-->
+                <TextBlock x:Name="RoleNameTbl" FontSize="19" Foreground="White" FontWeight="Medium" Text="{Binding User.Role}"/>
+                <!--#endregion-->
+                <!--#region Имя пользователя-->
+                <TextBlock x:Name="AccountNameTbl" Grid.Column="1" FontSize="19" Foreground="White" FontWeight="Medium"/>
+                <!--#endregion-->
+
+                <!--#region Иконка "Выхода"-->
+                <Border Grid.Column="3" Width="18" Height="18">
+                    <Button Name="ExitBtn" Style="{StaticResource ButtonExit}" Click="ExitBtn_Click">
+                        <Image Source="/Resource/Icons/exit.png" />
+                    </Button>
+                </Border>
+                <!--#endregion-->
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+            </Grid>
+        </Grid>
+        <!-- #endregion -->
+
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="52"/>
+                <RowDefinition Height="840"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <!--#region Подменю-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <ComboBox Name="GroupCmb" Margin="30 5 0 5" FontSize="20" VerticalContentAlignment="Center" SelectionChanged="GroupCmb_SelectionChanged"/>
+            </Grid>
+            <!--#endregion-->
+            <Grid Grid.Row="1">
+                <!--#region Список студентов-->
+                <ListView x:Name="StudentsLv" SelectionChanged="StudentsLv_SelectionChanged" FontSize="20">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Фамилия" DisplayMemberBinding="{Binding Surname}"/>
+                            <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding Name}"/>
+                            <GridViewColumn Header="Отчество" DisplayMemberBinding="{Binding Patronymic}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <!--#endregion-->
+            </Grid>
+            <Frame Grid.RowSpan="3" Name="MainFrame" NavigationUIVisibility="Hidden"/>
+        </Grid>
+    </Grid>
+</Window>
