@@ -94,15 +94,33 @@
                 <Border Grid.Row="2" VerticalAlignment="Bottom" CornerRadius="1" Margin="30 0" Background="#5367D3" Height="2" Width="155" HorizontalAlignment="Left"/>
                 <Border Grid.Row="5" VerticalAlignment="Bottom" CornerRadius="1" Margin="30 0" Background="Black" Height="2"/>
                 <StackPanel Grid.Row="4">
-                    <Border BorderThickness="3" CornerRadius="3" Grid.Row="4" Margin="30 0" Width="201" HorizontalAlignment="Left" Height="170">
-                        <Border.BorderBrush>
-                            <VisualBrush>
-                                <VisualBrush.Visual>
-                                    <Rectangle Stroke="#5367D3" StrokeDashArray="1 1" StrokeThickness="2" Width="100" Height="100"/>
-                                </VisualBrush.Visual>
-                            </VisualBrush>
-                        </Border.BorderBrush>
-                        <!-- Внутренний контейнер для TextBox и Image -->
+                    <Border x:Name="DesignBorder" CornerRadius="3" Grid.Row="4" Margin="30 0" Width="201" HorizontalAlignment="Left" Height="170">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <VisualBrush>
+                                            <VisualBrush.Visual>
+                                                <Rectangle Stroke="#5367D3" StrokeDashArray="1 1" StrokeThickness="2" RadiusX="2" RadiusY="2" Width="100" Height="100"/>
+                                            </VisualBrush.Visual>
+                                        </VisualBrush>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background">
+                                            <Setter.Value>
+                                                <VisualBrush>
+                                                    <VisualBrush.Visual>
+                                                        <Rectangle Stroke="#5367D3" StrokeThickness="2" Width="100" Height="100" RadiusX="2" RadiusY="2"/>
+                                                    </VisualBrush.Visual>
+                                                </VisualBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="30"/>
@@ -114,6 +132,37 @@
                             <TextBlock Grid.Row="3" Foreground="#5367D3" FontSize="17" Text="Загрузить приписное св-во" Margin="30 0" TextWrapping="Wrap" TextAlignment="Center"/>
                             <Image Source="/Resource/Icons/Group 17.png" Grid.Row="1"/>
                         </Grid>
+
+
+                        <!--<Border.BorderBrush>
+                            <VisualBrush>
+                                <VisualBrush.Visual>
+                                    <Rectangle Stroke="#5367D3" StrokeDashArray="1 1" StrokeThickness="2" Width="100" Height="100"/>
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </Border.BorderBrush>
+                        --><!-- Внутренний контейнер для TextBox и Image --><!--
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="3" Foreground="#5367D3" FontSize="17" Text="Загрузить приписное св-во" Margin="30 0" TextWrapping="Wrap" TextAlignment="Center"/>
+                            <Image Source="/Resource/Icons/Group 17.png" Grid.Row="1"/>
+                        </Grid>
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="BorderBrush" Value="#5367D3"/>
+                                        <Setter Property="BorderThickness" Value="3"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>-->
                     </Border>
                 </StackPanel>
             </Grid>
