@@ -20,6 +20,7 @@ namespace StudentsVer2._0.Model
         public string Patronymic { get; set; }
         public int GroupID { get; set; }
         public Nullable<System.DateTime> BirthDay { get; set; }
+        public string Gender { get; set; }
         public Nullable<int> PassportID { get; set; }
     
         public virtual Group Group { get; set; }

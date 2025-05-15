@@ -47,18 +47,17 @@ namespace StudentsVer2._0.View.Windows.Menu
         private void StudentsLv_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             // Получаем выбранного студента
-            var selectedStudent = StudentsLv.SelectedItem as Student;
+            SelectedStudentHelper.selectedStudent = StudentsLv.SelectedItem as Student;
 
-            if (selectedStudent != null)
+            if (SelectedStudentHelper.selectedStudent != null)
             {
                 // Загружаем название группы из текущего контекста
-                string groupTitle = App.context.Group.FirstOrDefault(g => g.ID == selectedStudent.GroupID)?.Title ?? "Группа не найдена";
+                string groupTitle = App.context.Group.FirstOrDefault(g => g.ID == SelectedStudentHelper.selectedStudent.GroupID)?.Title ?? "Группа не найдена";
 
                 // Открываем окно с личным делом студента
-                //StudentDetailsWindow studentDetailsWindow = new StudentDetailsWindow(selectedStudent, groupTitle);
-                //studentDetailsWindow.Show();
 
-                MainFrame.Navigate(new View.Pages.Menu.StudentDetailPage(selectedStudent, groupTitle));
+
+                MainFrame.Navigate(new View.Pages.Menu.StudentDetailPage(SelectedStudentHelper.selectedStudent, groupTitle));
             }
         }
 

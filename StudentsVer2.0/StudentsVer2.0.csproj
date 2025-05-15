@@ -89,6 +89,7 @@
     </Compile>
     <Compile Include="AppData\AuthorizationHelper.cs" />
     <Compile Include="AppData\FrameHelper.cs" />
+    <Compile Include="AppData\SelectedStudentHelper.cs" />
     <Compile Include="Model\Group.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -255,6 +256,7 @@
       <DependentUpon>Model.edmx</DependentUpon>
       <LastGenOutput>Model.cs</LastGenOutput>
     </Content>
+    <Resource Include="Resource\Image\check.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

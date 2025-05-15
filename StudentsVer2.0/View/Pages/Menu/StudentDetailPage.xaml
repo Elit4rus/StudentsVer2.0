@@ -128,8 +128,8 @@
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="1*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="3" Foreground="#5367D3" FontSize="17" Text="Заполнить паспорт" Margin="30 0" TextWrapping="Wrap" TextAlignment="Center"/>
-                            <Image Source="/Resource/Icons/Group 17.png" Grid.Row="1"/>
+                            <TextBlock x:Name="PassportTextTbl" Grid.Row="3" Foreground="#5367D3" FontSize="17" Text="Заполнить паспорт" Margin="30 0" TextWrapping="Wrap" TextAlignment="Center"/>
+                            <Image x:Name="PassportIconImg" Source="/Resource/Icons/Group 17.png" Grid.Row="1"/>
                         </Grid>
                     </Border>
 
@@ -172,8 +172,6 @@
                             <Image Source="/Resource/Icons/Group 17.png" Grid.Row="1"/>
                         </Grid>
                     </Border>
-                    
-                    <Image x:Name="PassportImage" Width="100" Height="100" Margin="0 20" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="2">

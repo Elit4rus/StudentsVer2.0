@@ -30,8 +30,7 @@
                             <EventTrigger RoutedEvent="PreviewMouseUp">
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <ThicknessAnimation Storyboard.TargetProperty="Margin"
-                            Duration="0:0:0.100" To="0"/>
+                                        <ThicknessAnimation Storyboard.TargetProperty="Margin" Duration="0:0:0.100" To="0"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </EventTrigger>

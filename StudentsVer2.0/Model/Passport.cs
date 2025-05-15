@@ -24,7 +24,7 @@ namespace StudentsVer2._0.Model
         public string PassportIssued { get; set; }
         public Nullable<System.DateTime> DateOfIssue { get; set; }
         public string DepartmentCode { get; set; }
-        public Nullable<int> SeriesAndNumber { get; set; }
+        public string SeriesAndNumber { get; set; }
         public Nullable<System.DateTime> RegistrationDate { get; set; }
         public string PlaceOfResidence { get; set; }
     
