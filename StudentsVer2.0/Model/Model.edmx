@@ -4,13 +4,25 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Хранилище user22Model" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Хранилище Model" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Group">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Passport">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PassportIssued" Type="nvarchar(max)" />
+          <Property Name="DateOfIssue" Type="date" />
+          <Property Name="DepartmentCode" Type="nchar" MaxLength="7" />
+          <Property Name="SeriesAndNumber" Type="int" />
+          <Property Name="RegistrationDate" Type="date" />
+          <Property Name="PlaceOfResidence" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -29,7 +41,7 @@
           <Property Name="Patronymic" Type="nvarchar" MaxLength="40" />
           <Property Name="GroupID" Type="int" Nullable="false" />
           <Property Name="BirthDay" Type="date" />
-          <Property Name="NominalNumber" Type="nvarchar" MaxLength="10" />
+          <Property Name="PassportID" Type="int" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -60,6 +72,18 @@
             </Principal>
             <Dependent Role="Student">
               <PropertyRef Name="GroupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_Passport">
+          <End Role="Passport" Type="Self.Passport" Multiplicity="0..1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Passport">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="PassportID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -99,14 +123,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="Хранилище user22ModelContainer">
+        <EntityContainer Name="Хранилище ModelContainer">
           <EntitySet Name="Group" EntityType="Self.Group" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Passport" EntityType="Self.Passport" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserGroup" EntityType="Self.UserGroup" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Student_Group" Association="Self.FK_Student_Group">
             <End Role="Group" EntitySet="Group" />
+            <End Role="Student" EntitySet="Student" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_Passport" Association="Self.FK_Student_Passport">
+            <End Role="Passport" EntitySet="Passport" />
             <End Role="Student" EntitySet="Student" />
           </AssociationSet>
           <AssociationSet Name="FK_User_Role" Association="Self.FK_User_Role">
@@ -126,7 +155,7 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="user22Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Group">
           <Key>
             <PropertyRef Name="ID" />
@@ -135,6 +164,19 @@
           <Property Name="Title" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Student" Relationship="Self.FK_Student_Group" FromRole="Group" ToRole="Student" />
           <NavigationProperty Name="UserGroup" Relationship="Self.FK_UserGroup_Group" FromRole="Group" ToRole="UserGroup" />
+        </EntityType>
+        <EntityType Name="Passport">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PassportIssued" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateOfIssue" Type="DateTime" Precision="0" />
+          <Property Name="DepartmentCode" Type="String" MaxLength="7" FixedLength="true" Unicode="true" />
+          <Property Name="SeriesAndNumber" Type="Int32" />
+          <Property Name="RegistrationDate" Type="DateTime" Precision="0" />
+          <Property Name="PlaceOfResidence" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Student" Relationship="Self.FK_Student_Passport" FromRole="Passport" ToRole="Student" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -154,8 +196,9 @@
           <Property Name="Patronymic" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
           <Property Name="GroupID" Type="Int32" Nullable="false" />
           <Property Name="BirthDay" Type="DateTime" Precision="0" />
-          <Property Name="NominalNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PassportID" Type="Int32" />
           <NavigationProperty Name="Group" Relationship="Self.FK_Student_Group" FromRole="Student" ToRole="Group" />
+          <NavigationProperty Name="Passport" Relationship="Self.FK_Student_Passport" FromRole="Student" ToRole="Passport" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -205,6 +248,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Student_Passport">
+          <End Role="Passport" Type="Self.Passport" Multiplicity="0..1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Passport">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="PassportID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_User_Role">
           <End Role="Role" Type="Self.Role" Multiplicity="1" />
           <End Role="User" Type="Self.User" Multiplicity="*" />
@@ -231,6 +286,7 @@
         </Association>
         <EntityContainer Name="StudentEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Group" EntityType="Self.Group" />
+          <EntitySet Name="Passport" EntityType="Self.Passport" />
           <EntitySet Name="Role" EntityType="Self.Role" />
           <EntitySet Name="Student" EntityType="Self.Student" />
           <EntitySet Name="User" EntityType="Self.User" />
@@ -242,6 +298,10 @@
           <AssociationSet Name="FK_UserGroup_Group" Association="Self.FK_UserGroup_Group">
             <End Role="Group" EntitySet="Group" />
             <End Role="UserGroup" EntitySet="UserGroup" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_Passport" Association="Self.FK_Student_Passport">
+            <End Role="Passport" EntitySet="Passport" />
+            <End Role="Student" EntitySet="Student" />
           </AssociationSet>
           <AssociationSet Name="FK_User_Role" Association="Self.FK_User_Role">
             <End Role="Role" EntitySet="Role" />
@@ -257,17 +317,30 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Хранилище user22ModelContainer" CdmEntityContainer="StudentEntities">
+        <EntityContainerMapping StorageEntityContainer="Хранилище ModelContainer" CdmEntityContainer="StudentEntities">
           <EntitySetMapping Name="Group">
-            <EntityTypeMapping TypeName="user22Model.Group">
+            <EntityTypeMapping TypeName="Model.Group">
               <MappingFragment StoreEntitySet="Group">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Passport">
+            <EntityTypeMapping TypeName="Model.Passport">
+              <MappingFragment StoreEntitySet="Passport">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="PassportIssued" ColumnName="PassportIssued" />
+                <ScalarProperty Name="DateOfIssue" ColumnName="DateOfIssue" />
+                <ScalarProperty Name="DepartmentCode" ColumnName="DepartmentCode" />
+                <ScalarProperty Name="SeriesAndNumber" ColumnName="SeriesAndNumber" />
+                <ScalarProperty Name="RegistrationDate" ColumnName="RegistrationDate" />
+                <ScalarProperty Name="PlaceOfResidence" ColumnName="PlaceOfResidence" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Role">
-            <EntityTypeMapping TypeName="user22Model.Role">
+            <EntityTypeMapping TypeName="Model.Role">
               <MappingFragment StoreEntitySet="Role">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
@@ -275,7 +348,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Student">
-            <EntityTypeMapping TypeName="user22Model.Student">
+            <EntityTypeMapping TypeName="Model.Student">
               <MappingFragment StoreEntitySet="Student">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Surname" ColumnName="Surname" />
@@ -283,12 +356,12 @@
                 <ScalarProperty Name="Patronymic" ColumnName="Patronymic" />
                 <ScalarProperty Name="GroupID" ColumnName="GroupID" />
                 <ScalarProperty Name="BirthDay" ColumnName="BirthDay" />
-                <ScalarProperty Name="NominalNumber" ColumnName="NominalNumber" />
+                <ScalarProperty Name="PassportID" ColumnName="PassportID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="User">
-            <EntityTypeMapping TypeName="user22Model.User">
+            <EntityTypeMapping TypeName="Model.User">
               <MappingFragment StoreEntitySet="User">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="RoleID" ColumnName="RoleID" />
@@ -301,7 +374,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="UserGroup">
-            <EntityTypeMapping TypeName="user22Model.UserGroup">
+            <EntityTypeMapping TypeName="Model.UserGroup">
               <MappingFragment StoreEntitySet="UserGroup">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="GroupID" ColumnName="GroupID" />

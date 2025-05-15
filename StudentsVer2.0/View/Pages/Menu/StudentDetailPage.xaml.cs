@@ -1,6 +1,5 @@
 ﻿using StudentsVer2._0.Model;
-using System;
-using System.Windows;
+using StudentsVer2._0.View.Windows.Documents;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -15,7 +14,7 @@ namespace StudentsVer2._0.View.Pages.Menu
         {
             InitializeComponent();
 
-            DesignBorder.MouseLeftButtonDown += OnDesignElementClicked;
+            PassportBorder.MouseLeftButtonDown += OnDesignElementClicked;
 
             SurnameTbl.Text = student.Surname;
             NameTbl.Text = student.Name;
@@ -26,7 +25,9 @@ namespace StudentsVer2._0.View.Pages.Menu
 
         private void OnDesignElementClicked(object sender, MouseButtonEventArgs e)
         {
-            MessageBox.Show("Элемент был кликнут!");
+            PassportWindow passportWindow = new PassportWindow();
+            passportWindow.Show();
+
         }
 
         private void BackBtn_Click(object sender, System.Windows.RoutedEventArgs e)
