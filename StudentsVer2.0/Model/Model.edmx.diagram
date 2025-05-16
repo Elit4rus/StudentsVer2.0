@@ -4,18 +4,18 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="799c957de5fb46fba7d0413ea5bf133e" Name="Diagram1">
-        <EntityTypeShape EntityType="Model.Group" Width="1.5" PointX="0.75" PointY="4.125" />
-        <EntityTypeShape EntityType="Model.Passport" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="Model.Role" Width="1.5" PointX="1.5" PointY="9.25" />
-        <EntityTypeShape EntityType="Model.Student" Width="1.5" PointX="3" PointY="3.5" />
-        <EntityTypeShape EntityType="Model.User" Width="1.5" PointX="3.75" PointY="8.625" />
-        <EntityTypeShape EntityType="Model.UserGroup" Width="1.5" PointX="6" PointY="4" />
-        <AssociationConnector Association="Model.FK_Student_Group" />
-        <AssociationConnector Association="Model.FK_UserGroup_Group" />
-        <AssociationConnector Association="Model.FK_Student_Passport1" />
-        <AssociationConnector Association="Model.FK_User_Role" />
-        <AssociationConnector Association="Model.FK_UserGroup_User" />
+      <Diagram DiagramId="7f5d6ee7317e46b3bb25f4ad66469023" Name="Diagram1">
+        <EntityTypeShape EntityType="StudentsDBModel.Group" Width="1.5" PointX="0.75" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudentsDBModel.Passport" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudentsDBModel.Role" Width="1.5" PointX="1.5" PointY="9.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudentsDBModel.Student" Width="1.5" PointX="3" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudentsDBModel.User" Width="1.5" PointX="3.75" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudentsDBModel.UserGroup" Width="1.5" PointX="6" PointY="4" IsExpanded="true" />
+        <AssociationConnector Association="StudentsDBModel.FK_Student_Group" ManuallyRouted="false" />
+        <AssociationConnector Association="StudentsDBModel.FK_UserGroup_Group" ManuallyRouted="false" />
+        <AssociationConnector Association="StudentsDBModel.FK_Student_Passport1" ManuallyRouted="false" />
+        <AssociationConnector Association="StudentsDBModel.FK_User_Role" ManuallyRouted="false" />
+        <AssociationConnector Association="StudentsDBModel.FK_UserGroup_User" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

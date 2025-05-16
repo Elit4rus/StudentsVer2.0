@@ -30,7 +30,7 @@ namespace StudentsVer2._0.View.Pages.Menu
 
             if (SelectedStudentHelper.selectedStudent.Gender == "ж")
             {
-                MilitaryCertificateBorder.Visibility = Visibility.Hidden;
+                MilitaryCertificateBorder.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -54,8 +54,6 @@ namespace StudentsVer2._0.View.Pages.Menu
 
         private void OnDesignElementClicked(object sender, MouseButtonEventArgs e)
         {
-            //PassportWindow passportWindow = new PassportWindow();
-            //passportWindow.ShowDialog();
 
             PassportWindow passportWindow = new PassportWindow();
             if (passportWindow.ShowDialog() == true)
