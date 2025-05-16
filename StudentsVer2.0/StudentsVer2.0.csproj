@@ -170,6 +170,9 @@
     <Compile Include="View\Windows\Login\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Windows\Menu\ChoiseCuratorWindow.xaml.cs">
+      <DependentUpon>ChoiseCuratorWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Windows\Menu\LogoutWindow.xaml.cs">
       <DependentUpon>LogoutWindow.xaml</DependentUpon>
     </Compile>
@@ -236,6 +239,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Windows\Menu\ChoiseCuratorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Windows\Menu\LogoutWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -260,6 +267,9 @@
       <DependentUpon>Model.edmx</DependentUpon>
       <LastGenOutput>Model.cs</LastGenOutput>
     </Content>
+    <Resource Include="Resource\Icons\ThicknessXmarkFAT.png" />
+    <Resource Include="Resource\Icons\ThicknessCircle40px.png" />
+    <Resource Include="Resource\Icons\RedCirkle40px.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resource\Image\account.png" />
