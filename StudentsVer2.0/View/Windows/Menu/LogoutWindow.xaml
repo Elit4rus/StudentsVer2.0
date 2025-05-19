@@ -39,39 +39,42 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="ButtonXmark" TargetType="Button">
-            <!-- Базовая настройка кнопки -->
+        <Style x:Key="XmarkButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Content">
+            <Setter Property="Template">
                 <Setter.Value>
-                    <!-- Стандартное изображение -->
-                    <Image Source="/Resource/Icons/ThicknessXmarkFAT.png"/>
+                    <ControlTemplate TargetType="Button">
+                        <Grid Background="{TemplateBinding Background}">
+                            <Image Source="/Resource/Icons/ThicknessXmarkFAT.png" />
+                        </Grid>
+                    </ControlTemplate>
                 </Setter.Value>
             </Setter>
-
-            <!-- Триггеры для анимации -->
             <Style.Triggers>
-                <!-- При наведении мыши -->
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Content">
+                    <Setter Property="Template">
                         <Setter.Value>
-                            <!-- Изображение при наведении -->
-                            <Image Source="/Resource/Icons/RedCirkle40px.png"/>
+                            <ControlTemplate TargetType="Button">
+                                <Grid Background="{TemplateBinding Background}">
+                                    <Image Source="/Resource/Icons/RedCirkle40px.png" />
+
+                                </Grid>
+                            </ControlTemplate>
                         </Setter.Value>
                     </Setter>
                     <Trigger.EnterActions>
                         <BeginStoryboard>
                             <Storyboard>
                                 <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                             From="0" To="1" Duration="0:0:0.1"/>
+         From="0" To="1" Duration="0:0:0.1"/>
                             </Storyboard>
                         </BeginStoryboard>
                     </Trigger.EnterActions>
                 </Trigger>
             </Style.Triggers>
-            
         </Style>
+        
     </Window.Resources>
     <Border CornerRadius="10" Background="White" BorderThickness="1" BorderBrush="Gray">
         <Border.Effect>
@@ -121,7 +124,7 @@
                 </Button.Style>
             </Button>
 
-            <Button Grid.Column="3" Width="28" Height="28" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0 5 5 0"  Name="CloseBtn" Style="{StaticResource ButtonXmark}" Click="CloseBtn_Click"/>
+            <Button Grid.Column="3" Width="28" Height="28" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0 5 5 0"  Name="CloseBtn" Style="{StaticResource XmarkButton}" Click="CloseBtn_Click"/>
         </Grid>
     </Border>
     

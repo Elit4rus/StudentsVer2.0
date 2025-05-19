@@ -37,9 +37,19 @@ namespace StudentsVer2._0.View.Windows.Menu
             // Загружаем группы, связанные с текущим пользователем
             LoadGroups(AuthorizationHelper.currentUser.ID);
 
-            if (AuthorizationHelper.currentUser.RoleID == 2)
+            if (AuthorizationHelper.currentUser.RoleID != 1)
             {
                 ImportBtn.Visibility = Visibility.Collapsed;
+            }
+
+            if (AuthorizationHelper.currentUser.RoleID != 1)
+            {
+                AddStudentBtn.Visibility = Visibility.Collapsed;
+            }
+
+            if (AuthorizationHelper.currentUser.RoleID != 1)
+            {
+                DeleteStudentBtn.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -131,71 +141,86 @@ namespace StudentsVer2._0.View.Windows.Menu
 
         private void ImportBtn_Click(object sender, RoutedEventArgs e)
         {
-            // Открытие диалогового окна для выбора Excel-файла
-            OpenFileDialog dialog = new OpenFileDialog
-            {
-                Filter = "Excel Files|*.xls;*.xlsx;*.xlsm"
-            };
+            ChoiseCuratorWindow choiseCuratorWindow = new ChoiseCuratorWindow();
+            choiseCuratorWindow.ShowDialog();
 
-            if (dialog.ShowDialog() == true)
+            UserGroup newUserGroup = new UserGroup();
+
+            if (choiseCuratorWindow.DialogResult == true)
             {
-                try
+                // Открытие диалогового окна для выбора Excel-файла
+                OpenFileDialog dialog = new OpenFileDialog
                 {
-                    using (var workbook = new XLWorkbook(dialog.FileName))
-                    using (var context = new StudentEntities()) // Один контекст для всей операции
+                    Filter = "Excel Files|*.xls;*.xlsx;*.xlsm"
+                };
+
+                if (dialog.ShowDialog() == true)
+                {
+                    try
                     {
-                        var worksheet = workbook.Worksheet(1);
-                        var rows = worksheet.RowsUsed().Skip(1);
-
-                        foreach (var row in rows)
+                        using (var workbook = new XLWorkbook(dialog.FileName))
+                        using (var context = new StudentEntities()) // Один контекст для всей операции
                         {
-                            try
+                            var worksheet = workbook.Worksheet(1);
+                            var rows = worksheet.RowsUsed().Skip(1);
+
+                            foreach (var row in rows)
                             {
-                                // 1. Обработка группы
-                                var groupTitle = GetCellValue(row, 5); // Колонка E
-                                if (string.IsNullOrWhiteSpace(groupTitle))
+                                try
                                 {
-                                    MessageBox.Show($"Пропуск строки {row.RowNumber()}: отсутствует группа");
-                                    continue;
+                                    // 1. Обработка группы
+                                    var groupTitle = GetCellValue(row, 5); // Колонка E
+                                    if (string.IsNullOrWhiteSpace(groupTitle))
+                                    {
+                                        MessageBox.Show($"Пропуск строки {row.RowNumber()}: отсутствует группа");
+                                        continue;
+                                    }
+
+                                    var group = GetOrCreateGroup(context, groupTitle);
+
+                                    // 2. Сохранение группы ПЕРЕД добавлением студента
+                                    if (context.Entry(group).State == EntityState.Added)
+                                    {
+                                        context.SaveChanges(); // Явное сохранение новой группы
+                                    }
+
+                                    // 3. Создание студента
+                                    var student = new Student
+                                    {
+                                        Surname = GetCellValue(row, 2),
+                                        Name = GetCellValue(row, 3),
+                                        Patronymic = GetCellValue(row, 4),
+                                        BirthDay = ParseDate(GetCellValue(row, 6)),
+                                        Gender = ParseGender(GetCellValue(row, 7)),
+                                        GroupID = group.ID // Связь через ID
+                                    };
+
+                                    newUserGroup.UserID = CuratorHelper.selectedCurator.ID;
+                                    newUserGroup.GroupID = student.GroupID;
+                                    context.Student.Add(student);
+                                    context.UserGroup.Add(newUserGroup);
                                 }
-
-                                var group = GetOrCreateGroup(context, groupTitle);
-
-                                // 2. Сохранение группы ПЕРЕД добавлением студента
-                                if (context.Entry(group).State == EntityState.Added)
+                                catch (Exception ex)
                                 {
-                                    context.SaveChanges(); // Явное сохранение новой группы
+                                    MessageBox.Show($"Ошибка в строке {row.RowNumber()}: {ex.Message}");
                                 }
-
-                                // 3. Создание студента
-                                var student = new Student
-                                {
-                                    Surname = GetCellValue(row, 2),
-                                    Name = GetCellValue(row, 3),
-                                    Patronymic = GetCellValue(row, 4),
-                                    BirthDay = ParseDate(GetCellValue(row, 6)),
-                                    Gender = ParseGender(GetCellValue(row, 7)),
-                                    GroupID = group.ID // Связь через ID
-                                };
-
-                                context.Student.Add(student);
                             }
-                            catch (Exception ex)
-                            {
-                                MessageBox.Show($"Ошибка в строке {row.RowNumber()}: {ex.Message}");
-                            }
+
+                            // Фиксация всех изменений
+                            context.SaveChanges();
+                            MessageBox.Show("Импорт завершён успешно!");
+
                         }
-
-                        // Фиксация всех изменений
-                        context.SaveChanges();
-                        MessageBox.Show("Импорт завершён успешно!");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Общая ошибка: {ex.Message}");
                     }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Общая ошибка: {ex.Message}");
-                }
+
             }
+
+
         }
         private string GetCellValue(IXLRow row, int column)
         {
@@ -234,12 +259,19 @@ namespace StudentsVer2._0.View.Windows.Menu
             {
                 group = new Group { Title = groupTitle };
                 context.Group.Add(group);
-
-                // Для отладки
-                Console.WriteLine($"Добавлена новая группа: {groupTitle}");
             }
 
             return group;
+        }
+
+        private void AddStudentBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void DeleteStudentBtn_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

@@ -15,8 +15,8 @@ namespace StudentsVer2._0.Model
     public partial class UserGroup
     {
         public int ID { get; set; }
-        public int GroupID { get; set; }
-        public int UserID { get; set; }
+        public Nullable<int> GroupID { get; set; }
+        public Nullable<int> UserID { get; set; }
     
         public virtual Group Group { get; set; }
         public virtual User User { get; set; }

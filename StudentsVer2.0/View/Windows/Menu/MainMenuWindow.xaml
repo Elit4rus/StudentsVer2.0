@@ -39,6 +39,29 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontFamily" Value="Roboto"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="5" BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}">
+                            <ContentPresenter Margin="0 2 0 0" HorizontalAlignment="Center" VerticalAlignment="Center"></ContentPresenter>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#5367D3"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="FontWeight" Value="Medium"/>
+                    <Setter Property="BorderBrush" Value="#5367D3"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -94,7 +117,8 @@
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
                 <ComboBox Name="GroupCmb" Margin="30 5 0 5" FontSize="20" VerticalContentAlignment="Center" SelectionChanged="GroupCmb_SelectionChanged"/>
-                <Button x:Name="ImportBtn" Content="Добавить группу" FontSize="20" Grid.Column="2" Width="200" Height="40" HorizontalAlignment="Right" Margin="0 0 30 0" Click="ImportBtn_Click"/>
+                <Button x:Name="ImportBtn" Content="Добавить группу"  FontSize="20" Grid.Column="2" Width="200" Height="40" HorizontalAlignment="Right" Margin="0 0 30 0" Click="ImportBtn_Click"/>
+                <Button x:Name="AddStudentBtn" Grid.Column="3" Content="Добавить студента" FontSize="20" Width="200" Height="40" HorizontalAlignment="Right" Margin="0 0 260 0" Click="AddStudentBtn_Click"/>
                 <TextBlock Grid.Column="1" HorizontalAlignment="Center" Name="TestTbl"/>
             </Grid>
             <!--#endregion-->
@@ -103,6 +127,13 @@
                 <ListView x:Name="StudentsLv" SelectionChanged="StudentsLv_SelectionChanged" FontSize="20">
                     <ListView.View>
                         <GridView>
+                            <GridViewColumn>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox VerticalAlignment="Bottom"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
                             <GridViewColumn Header="Фамилия" DisplayMemberBinding="{Binding Surname}"/>
                             <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding Name}"/>
                             <GridViewColumn Header="Отчество" DisplayMemberBinding="{Binding Patronymic}"/>
@@ -112,6 +143,7 @@
                 <!--#endregion-->
             </Grid>
             <Frame Grid.RowSpan="3" Name="MainFrame" NavigationUIVisibility="Hidden"/>
+            <Button x:Name="DeleteStudentBtn" Content="Удалить студента"  FontSize="20" Grid.Row="2" Width="200" Height="40" HorizontalAlignment="Right" Margin="0 0 30 0" Click="DeleteStudentBtn_Click"/>
         </Grid>
     </Grid>
 </Window>

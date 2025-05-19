@@ -1,16 +1,8 @@
-﻿using System;
+﻿using StudentsVer2._0.AppData;
+using StudentsVer2._0.Model;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace StudentsVer2._0.View.Windows.Menu
 {
@@ -19,9 +11,31 @@ namespace StudentsVer2._0.View.Windows.Menu
     /// </summary>
     public partial class ChoiseCuratorWindow : Window
     {
+        List<User> curators = App.context.User.ToList();
         public ChoiseCuratorWindow()
         {
             InitializeComponent();
+            CuratorCmb.SelectedValuePath = "ID";
+            CuratorCmb.ItemsSource = curators;
+        }
+
+        private void CloseBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void ChoiseBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (CuratorCmb.SelectedValue == null)
+            {
+                MessageBox.Show("Выберите куратора группы!", "Ошибка");
+            }
+            else
+            {
+                CuratorHelper.selectedCurator = CuratorCmb.SelectedItem as User;
+                DialogResult = true;
+                Close();
+            }
         }
     }
 }

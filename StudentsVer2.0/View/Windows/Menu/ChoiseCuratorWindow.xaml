@@ -5,72 +5,109 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StudentsVer2._0.View.Windows.Menu"
         mc:Ignorable="d"
-        Title="Окно выбора куратора" Height="450" Width="700" WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="NoResize">
+        Title="Окно выбора куратора" Height="350" Width="900" WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="NoResize">
     <Window.Resources>
-        <Style x:Key="ButtonClose" TargetType="Button">
-            <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Style x:Key="XmarkButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Name="Border" BorderThickness="0" BorderBrush="Black" Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <EventTrigger RoutedEvent="PreviewMouseDown">
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ThicknessAnimation Storyboard.TargetProperty="Margin"
-                                                    Duration="0:0:0.100" To="1,1,1,1"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-
-                            <EventTrigger RoutedEvent="PreviewMouseUp">
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ThicknessAnimation Storyboard.TargetProperty="Margin" Duration="0:0:0.100" To="0"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                        </ControlTemplate.Triggers>
+                        <Grid Background="{TemplateBinding Background}">
+                            <Image Source="/Resource/Icons/ThicknessXmarkFAT.png" />
+                        </Grid>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Grid Background="{TemplateBinding Background}">
+                                    <Image Source="/Resource/Icons/RedCirkle40px.png" />
+
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity"
+ From="0" To="1" Duration="0:0:0.1"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontFamily" Value="Roboto"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="5" BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}">
+                            <ContentPresenter Margin="0 2 0 0" HorizontalAlignment="Center" VerticalAlignment="Center"></ContentPresenter>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#5367D3"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="FontWeight" Value="Medium"/>
+                    <Setter Property="BorderBrush" Value="#5367D3"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
     </Window.Resources>
-    <Grid Margin="20">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="3.5*"/>
-            <ColumnDefinition Width="1*"/>
-        </Grid.ColumnDefinitions>
-
-        <!--#region Иконка "Крест"-->
-        <Border Grid.Column="3" Width="40" Height="40" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0 0 0 0">
-            <Button Name="CloseBtn" Style="{StaticResource ButtonClose}">
-                <Image Source="/Resource/Icons/ThicknessCircle40px.png" />
-            </Button>
-        </Border>
-        <!--#endregion-->
-
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1.2*"/>
-                <RowDefinition Height="3*"/>
-                <RowDefinition Height="1.2*"/>
-            </Grid.RowDefinitions>
-
-            <Grid Grid.Row="1">
+    <Border BorderThickness="1" BorderBrush="Black" CornerRadius="10">
+        <Grid Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="3.5*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+        <Button Grid.Column="2" Width="35" Height="35" Name="CloseBtn" Style="{StaticResource XmarkButton}" Click="CloseBtn_Click" VerticalAlignment="Top" HorizontalAlignment="Right"/>
+            <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="0.6*"/>
-                    <RowDefinition Height="0.6*"/>
-                    <RowDefinition Height="0.6*"/>
+                    <RowDefinition Height="1.2*"/>
+                    <RowDefinition Height="4*"/>
+                    <RowDefinition Height="1.2*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Выберите классного руководителя группы" HorizontalAlignment="Center" FontSize="20"/>
-                <ComboBox Grid.Row="1" Height="45" VerticalAlignment="Top"/>
-                <Button Content="Выбрать" FontSize="20" Grid.Row="2" Height="40" Width="200"/>
+
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.6*"/>
+                        <RowDefinition Height="0.6*"/>
+                        <RowDefinition Height="0.6*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Выберите классного руководителя группы" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20"/>
+                    <ComboBox FontSize="20" Name="CuratorCmb" Grid.Row="1" Height="45" VerticalAlignment="Top" VerticalContentAlignment="Center">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Surname}"/>
+                                    <TextBlock Text=" "/>
+                                    <TextBlock Text="{Binding Name}"/>
+                                    <TextBlock Text=" "/>
+                                    <TextBlock Text="{Binding Patronymic}"/>
+                                    <TextBlock Text=" "/>
+                                    <TextBlock Text="("/>
+                                    <TextBlock Text="{Binding Role.Title}"/>
+                                    <TextBlock Text=")"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Button x:Name="ChoiseBtn" Content="Выбрать" FontSize="20" Grid.Row="2" Height="40" Width="200" Click="ChoiseBtn_Click"/>
+                </Grid>
             </Grid>
         </Grid>
-    </Grid>
+    </Border>
 </Window>

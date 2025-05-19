@@ -126,6 +126,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AppData\AuthorizationHelper.cs" />
+    <Compile Include="AppData\CuratorHelper.cs" />
     <Compile Include="AppData\FrameHelper.cs" />
     <Compile Include="AppData\SelectedStudentHelper.cs" />
     <Compile Include="Model\Group.cs">
