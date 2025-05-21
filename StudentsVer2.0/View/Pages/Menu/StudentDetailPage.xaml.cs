@@ -28,7 +28,7 @@ namespace StudentsVer2._0.View.Pages.Menu
 
             UpdatePassportIcon();
 
-            if (SelectedStudentHelper.selectedStudent.Gender == "ж")
+            if (SelectedStudentHelper.selectedStudent.GenderID == 2)
             {
                 MilitaryCertificateBorder.Visibility = Visibility.Collapsed;
             }

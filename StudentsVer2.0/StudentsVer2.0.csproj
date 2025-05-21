@@ -129,6 +129,9 @@
     <Compile Include="AppData\CuratorHelper.cs" />
     <Compile Include="AppData\FrameHelper.cs" />
     <Compile Include="AppData\SelectedStudentHelper.cs" />
+    <Compile Include="Model\Gender.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Group.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -170,6 +173,9 @@
     </Compile>
     <Compile Include="View\Windows\Login\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Windows\Menu\AddStudentWindow.xaml.cs">
+      <DependentUpon>AddStudentWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Windows\Menu\ChoiseCuratorWindow.xaml.cs">
       <DependentUpon>ChoiseCuratorWindow.xaml</DependentUpon>
@@ -240,6 +246,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Windows\Menu\AddStudentWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Windows\Menu\ChoiseCuratorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -258,16 +268,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Model\Model.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model.edmx</DependentUpon>
-      <LastGenOutput>Model.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Model\Model.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model.edmx</DependentUpon>
-      <LastGenOutput>Model.cs</LastGenOutput>
-    </Content>
     <Resource Include="Resource\Icons\ThicknessXmarkFAT.png" />
     <Resource Include="Resource\Icons\ThicknessCircle40px.png" />
     <Resource Include="Resource\Icons\RedCirkle40px.png" />
@@ -307,6 +307,19 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resource\Image\check.png" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Model\Model.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model.edmx</DependentUpon>
+      <LastGenOutput>Model.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Model\Model.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model.edmx</DependentUpon>
+      <LastGenOutput>Model.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

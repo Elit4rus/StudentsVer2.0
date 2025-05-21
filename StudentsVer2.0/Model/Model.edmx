@@ -5,6 +5,13 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="Хранилище StudentsDBModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Gender">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="1" />
+        </EntityType>
         <EntityType Name="Group">
           <Key>
             <PropertyRef Name="ID" />
@@ -36,13 +43,14 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Surname" Type="nvarchar" MaxLength="40" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="Surname" Type="nvarchar" MaxLength="40" />
+          <Property Name="Name" Type="nvarchar" MaxLength="40" />
           <Property Name="Patronymic" Type="nvarchar" MaxLength="40" />
           <Property Name="GroupID" Type="int" />
           <Property Name="BirthDay" Type="date" />
-          <Property Name="Gender" Type="nvarchar" MaxLength="1" />
+          <Property Name="GenderID" Type="int" />
           <Property Name="PassportID" Type="int" />
+          <Property Name="IsSelected" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -64,8 +72,22 @@
           <Property Name="GroupID" Type="int" />
           <Property Name="UserID" Type="int" />
         </EntityType>
+        <Association Name="FK_Student_Gender">
+          <End Role="Gender" Type="Self.Gender" Multiplicity="0..1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Gender">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="GenderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Student_Group">
-          <End Role="Group" Type="Self.Group" Multiplicity="0..1" />
+          <End Role="Group" Type="Self.Group" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Student" Type="Self.Student" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Group">
@@ -101,7 +123,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_UserGroup_Group">
-          <End Role="Group" Type="Self.Group" Multiplicity="0..1" />
+          <End Role="Group" Type="Self.Group" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="UserGroup" Type="Self.UserGroup" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Group">
@@ -125,12 +149,17 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="Хранилище StudentsDBModelContainer">
+          <EntitySet Name="Gender" EntityType="Self.Gender" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Group" EntityType="Self.Group" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Passport" EntityType="Self.Passport" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserGroup" EntityType="Self.UserGroup" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Student_Gender" Association="Self.FK_Student_Gender">
+            <End Role="Gender" EntitySet="Gender" />
+            <End Role="Student" EntitySet="Student" />
+          </AssociationSet>
           <AssociationSet Name="FK_Student_Group" Association="Self.FK_Student_Group">
             <End Role="Group" EntitySet="Group" />
             <End Role="Student" EntitySet="Student" />
@@ -157,12 +186,17 @@
     <edmx:ConceptualModels>
       <Schema Namespace="StudentsDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="StudentEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Gender" EntityType="StudentsDBModel.Gender" />
           <EntitySet Name="Group" EntityType="StudentsDBModel.Group" />
           <EntitySet Name="Passport" EntityType="StudentsDBModel.Passport" />
           <EntitySet Name="Role" EntityType="StudentsDBModel.Role" />
           <EntitySet Name="Student" EntityType="StudentsDBModel.Student" />
           <EntitySet Name="User" EntityType="StudentsDBModel.User" />
           <EntitySet Name="UserGroup" EntityType="StudentsDBModel.UserGroup" />
+          <AssociationSet Name="FK_Student_Gender" Association="StudentsDBModel.FK_Student_Gender">
+            <End Role="Gender" EntitySet="Gender" />
+            <End Role="Student" EntitySet="Student" />
+          </AssociationSet>
           <AssociationSet Name="FK_Student_Group" Association="StudentsDBModel.FK_Student_Group">
             <End Role="Group" EntitySet="Group" />
             <End Role="Student" EntitySet="Student" />
@@ -184,6 +218,14 @@
             <End Role="UserGroup" EntitySet="UserGroup" />
           </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Gender">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Student" Relationship="StudentsDBModel.FK_Student_Gender" FromRole="Gender" ToRole="Student" />
+        </EntityType>
         <EntityType Name="Group">
           <Key>
             <PropertyRef Name="ID" />
@@ -219,13 +261,15 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Surname" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="Surname" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
           <Property Name="Patronymic" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
           <Property Name="GroupID" Type="Int32" />
           <Property Name="BirthDay" Type="DateTime" Precision="0" />
-          <Property Name="Gender" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="GenderID" Type="Int32" />
           <Property Name="PassportID" Type="Int32" />
+          <Property Name="IsSelected" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Gender" Relationship="StudentsDBModel.FK_Student_Gender" FromRole="Student" ToRole="Gender" />
           <NavigationProperty Name="Group" Relationship="StudentsDBModel.FK_Student_Group" FromRole="Student" ToRole="Group" />
           <NavigationProperty Name="Passport" Relationship="StudentsDBModel.FK_Student_Passport1" FromRole="Student" ToRole="Passport" />
         </EntityType>
@@ -253,8 +297,22 @@
           <NavigationProperty Name="Group" Relationship="StudentsDBModel.FK_UserGroup_Group" FromRole="UserGroup" ToRole="Group" />
           <NavigationProperty Name="User" Relationship="StudentsDBModel.FK_UserGroup_User" FromRole="UserGroup" ToRole="User" />
         </EntityType>
+        <Association Name="FK_Student_Gender">
+          <End Type="StudentsDBModel.Gender" Role="Gender" Multiplicity="0..1" />
+          <End Type="StudentsDBModel.Student" Role="Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Gender">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="GenderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Student_Group">
-          <End Type="StudentsDBModel.Group" Role="Group" Multiplicity="0..1" />
+          <End Type="StudentsDBModel.Group" Role="Group" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="StudentsDBModel.Student" Role="Student" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Group">
@@ -266,7 +324,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_UserGroup_Group">
-          <End Type="StudentsDBModel.Group" Role="Group" Multiplicity="0..1" />
+          <End Type="StudentsDBModel.Group" Role="Group" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="StudentsDBModel.UserGroup" Role="UserGroup" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Group">
@@ -319,6 +379,14 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="Хранилище StudentsDBModelContainer" CdmEntityContainer="StudentEntities">
+          <EntitySetMapping Name="Gender">
+            <EntityTypeMapping TypeName="StudentsDBModel.Gender">
+              <MappingFragment StoreEntitySet="Gender">
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Group">
             <EntityTypeMapping TypeName="StudentsDBModel.Group">
               <MappingFragment StoreEntitySet="Group">
@@ -351,8 +419,9 @@
           <EntitySetMapping Name="Student">
             <EntityTypeMapping TypeName="StudentsDBModel.Student">
               <MappingFragment StoreEntitySet="Student">
+                <ScalarProperty Name="IsSelected" ColumnName="IsSelected" />
                 <ScalarProperty Name="PassportID" ColumnName="PassportID" />
-                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="GenderID" ColumnName="GenderID" />
                 <ScalarProperty Name="BirthDay" ColumnName="BirthDay" />
                 <ScalarProperty Name="GroupID" ColumnName="GroupID" />
                 <ScalarProperty Name="Patronymic" ColumnName="Patronymic" />

@@ -20,6 +20,8 @@ namespace StudentsVer2._0.View.Windows.Menu
         // Создаем список пользователей
         List<Student> students = App.context.Student.ToList();
         List<Group> groups = App.context.Group.ToList();
+        Student studentInLv = new Student();
+        Group selectedGroup = new Group();
         public MainMenuWindow()
         {
             InitializeComponent();
@@ -41,12 +43,10 @@ namespace StudentsVer2._0.View.Windows.Menu
             {
                 ImportBtn.Visibility = Visibility.Collapsed;
             }
-
             if (AuthorizationHelper.currentUser.RoleID != 1)
             {
                 AddStudentBtn.Visibility = Visibility.Collapsed;
             }
-
             if (AuthorizationHelper.currentUser.RoleID != 1)
             {
                 DeleteStudentBtn.Visibility = Visibility.Collapsed;
@@ -74,15 +74,13 @@ namespace StudentsVer2._0.View.Windows.Menu
                 string groupTitle = App.context.Group.FirstOrDefault(g => g.ID == SelectedStudentHelper.selectedStudent.GroupID)?.Title ?? "Группа не найдена";
 
                 // Открываем окно с личным делом студента
-
-
                 MainFrame.Navigate(new View.Pages.Menu.StudentDetailPage(SelectedStudentHelper.selectedStudent, groupTitle));
             }
         }
 
         private void GroupCmb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Group selectedGroup = GroupCmb.SelectedItem as Group;
+            selectedGroup = GroupCmb.SelectedItem as Group;
             if (selectedGroup != null)
             {
                 // Загружаем студентов для выбранной группы
@@ -144,116 +142,129 @@ namespace StudentsVer2._0.View.Windows.Menu
             ChoiseCuratorWindow choiseCuratorWindow = new ChoiseCuratorWindow();
             choiseCuratorWindow.ShowDialog();
 
-            UserGroup newUserGroup = new UserGroup();
+            var dialog = new OpenFileDialog { Filter = "Excel Files|*.xls;*.xlsx;*.xlsm" };
 
-            if (choiseCuratorWindow.DialogResult == true)
+            if (dialog.ShowDialog() == true)
             {
-                // Открытие диалогового окна для выбора Excel-файла
-                OpenFileDialog dialog = new OpenFileDialog
+                try
                 {
-                    Filter = "Excel Files|*.xls;*.xlsx;*.xlsm"
-                };
-
-                if (dialog.ShowDialog() == true)
-                {
-                    try
+                    using (var workbook = new XLWorkbook(dialog.FileName))
                     {
-                        using (var workbook = new XLWorkbook(dialog.FileName))
-                        using (var context = new StudentEntities()) // Один контекст для всей операции
+                        var worksheet = workbook.Worksheet(1);
+                        var rows = worksheet.RowsUsed().Skip(1); // Пропускаем заголовок
+
+                        int added = 0, skipped = 0;
+                        var transaction = App.context.Database.BeginTransaction();
+
+                        foreach (var row in rows)
                         {
-                            var worksheet = workbook.Worksheet(1);
-                            var rows = worksheet.RowsUsed().Skip(1);
-
-                            foreach (var row in rows)
+                            try
                             {
-                                try
+                                var groupTitle = row.Cell(5).GetString().Trim();
+                                if (string.IsNullOrEmpty(groupTitle))
                                 {
-                                    // 1. Обработка группы
-                                    var groupTitle = GetCellValue(row, 5); // Колонка E
-                                    if (string.IsNullOrWhiteSpace(groupTitle))
-                                    {
-                                        MessageBox.Show($"Пропуск строки {row.RowNumber()}: отсутствует группа");
-                                        continue;
-                                    }
-
-                                    var group = GetOrCreateGroup(context, groupTitle);
-
-                                    // 2. Сохранение группы ПЕРЕД добавлением студента
-                                    if (context.Entry(group).State == EntityState.Added)
-                                    {
-                                        context.SaveChanges(); // Явное сохранение новой группы
-                                    }
-
-                                    // 3. Создание студента
-                                    var student = new Student
-                                    {
-                                        Surname = GetCellValue(row, 2),
-                                        Name = GetCellValue(row, 3),
-                                        Patronymic = GetCellValue(row, 4),
-                                        BirthDay = ParseDate(GetCellValue(row, 6)),
-                                        Gender = ParseGender(GetCellValue(row, 7)),
-                                        GroupID = group.ID // Связь через ID
-                                    };
-
-                                    newUserGroup.UserID = CuratorHelper.selectedCurator.ID;
-                                    newUserGroup.GroupID = student.GroupID;
-                                    context.Student.Add(student);
-                                    context.UserGroup.Add(newUserGroup);
+                                    skipped++;
+                                    continue;
                                 }
-                                catch (Exception ex)
+
+                                // Получаем или создаем группу
+                                var group = App.context.Group.FirstOrDefault(g => g.Title == groupTitle)
+                                    ?? new Group { Title = groupTitle };
+
+                                if (group.ID == 0)
                                 {
-                                    MessageBox.Show($"Ошибка в строке {row.RowNumber()}: {ex.Message}");
+                                    App.context.Group.Add(group);
+                                    App.context.SaveChanges(); // Сохраняем для получения ID
                                 }
+
+                                // Проверяем существование студента
+                                var surname = row.Cell(2).GetString().Trim();
+                                var name = row.Cell(3).GetString().Trim();
+                                var patronymic = row.Cell(4).GetString().Trim();
+
+                                if (App.context.Student.Any(s =>
+                                    s.Surname == surname &&
+                                    s.Name == name &&
+                                    s.Patronymic == patronymic &&
+                                    s.GroupID == group.ID))
+                                {
+                                    skipped++;
+                                    continue;
+                                }
+
+                                // Парсим дату рождения
+                                if (!DateTime.TryParse(row.Cell(6).GetString(), out var birthDate))
+                                {
+                                    skipped++;
+                                    continue;
+                                }
+
+                                // Определяем пол
+                                var genderInput = row.Cell(7).GetString().Trim().ToLower();
+                                var gender = App.context.Gender.FirstOrDefault(g => g.Title == genderInput)
+                                    ?? App.context.Gender.First(); // По умолчанию
+
+                                // Создаем студента
+                                var student = new Student
+                                {
+                                    Surname = surname,
+                                    Name = name,
+                                    Patronymic = patronymic,
+                                    BirthDay = birthDate,
+                                    GenderID = gender.ID,
+                                    GroupID = group.ID
+                                };
+
+                                App.context.Student.Add(student);
+                                added++;
                             }
+                            catch { skipped++; }
+                        }
 
-                            // Фиксация всех изменений
-                            context.SaveChanges();
-                            MessageBox.Show("Импорт завершён успешно!");
-
+                        try
+                        {
+                            App.context.SaveChanges();
+                            transaction.Commit();
+                            MessageBox.Show($"Импорт завершен!\nДобавлено: {added}\nПропущено: {skipped}");
+                        }
+                        catch
+                        {
+                            transaction.Rollback();
+                            throw;
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"Общая ошибка: {ex.Message}");
-                    }
                 }
-
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка импорта: {ex.Message}");
+                }
             }
 
-
+            LoadGroups(AuthorizationHelper.currentUser.ID);
         }
         private string GetCellValue(IXLRow row, int column)
         {
             return row.Cell(column).GetString().Trim();
         }
-
         private DateTime? ParseDate(string dateString)
         {
             if (DateTime.TryParse(dateString, out DateTime result))
                 return result;
             return null;
         }
-
-        private string ParseGender(string gender)
+        private int ParseGender(StudentEntities context, string gender)
         {
-            if (string.IsNullOrEmpty(gender))
-                return null;
+            if (string.IsNullOrWhiteSpace(gender))
+                return 1;
 
-            switch (gender.ToLower())
-            {
-                case "м":
-                    return "м";
-                case "ж":
-                    return "ж";
-                default:
-                    return null;
-            }
+            Gender genderEntity = context.Gender
+                .FirstOrDefault(g => g.Title == gender.Trim().ToLower());
+
+            return (int)(genderEntity?.ID); // Вернет ID или null, если пол не найден
         }
-
         private Group GetOrCreateGroup(StudentEntities context, string groupTitle)
         {
-            var group = context.Group
-                .FirstOrDefault(g => g.Title == groupTitle);
+            var group = context.Group.FirstOrDefault(g => g.Title == groupTitle);
 
             if (group == null)
             {
@@ -264,14 +275,76 @@ namespace StudentsVer2._0.View.Windows.Menu
             return group;
         }
 
+        private bool IsStudentExists(StudentEntities context, string surname, string name, string patronymic, int groupId)
+        {
+            return context.Student.Any(s =>
+                s.Surname.Equals(surname) &&
+                s.Name.Equals(name) &&
+                (s.Patronymic == patronymic || (s.Patronymic == null && patronymic == "")) &&
+                s.GroupID == groupId);
+        }
+
         private void AddStudentBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            var addWindow = new AddStudentWindow();
+            if (addWindow.ShowDialog() == true)
+            {
+                // Обновляем список студентов текущей группы
+                LoadStudents(selectedGroup.ID, AuthorizationHelper.currentUser.RoleID);
+                MessageBox.Show("Студент успешно добавлен!");
+            }
         }
 
         private void DeleteStudentBtn_Click(object sender, RoutedEventArgs e)
         {
+            var selectedStudents = StudentsLv.Items.Cast<Student>()
+        .Where(s => s.IsSelected == true)
+        .ToList();
 
+            if (selectedStudents.Count == 0)
+            {
+                MessageBox.Show("Выберите студентов для удаления!");
+                return;
+            }
+
+            try
+            {
+                // Получаем ID для удаления
+                var idsToDelete = selectedStudents.Select(s => s.ID).ToList();
+
+                // Находим студентов в основном контексте
+                var studentsToDelete = App.context.Student
+                    .Where(s => idsToDelete.Contains(s.ID))
+                    .ToList();
+
+                // Удаление
+                App.context.Student.RemoveRange(studentsToDelete);
+                App.context.SaveChanges();
+
+                // Обновление интерфейса
+                LoadStudents(selectedGroup.ID, AuthorizationHelper.currentUser.RoleID);
+                MessageBox.Show($"Удалено {studentsToDelete.Count} студентов");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка удаления: {ex.Message}");
+            }
+        }
+
+        private void HeaderCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            foreach (var student in StudentsLv.Items.OfType<Student>())
+            {
+                student.IsSelected = true;
+            }
+        }
+
+        private void HeaderCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            foreach (var student in StudentsLv.Items.OfType<Student>())
+            {
+                student.IsSelected = false;
+            }
         }
     }
 }

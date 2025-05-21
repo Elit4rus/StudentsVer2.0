@@ -12,20 +12,18 @@ namespace StudentsVer2._0.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Student
+    public partial class Gender
     {
-        public int ID { get; set; }
-        public string Surname { get; set; }
-        public string Name { get; set; }
-        public string Patronymic { get; set; }
-        public Nullable<int> GroupID { get; set; }
-        public Nullable<System.DateTime> BirthDay { get; set; }
-        public Nullable<int> GenderID { get; set; }
-        public Nullable<int> PassportID { get; set; }
-        public bool IsSelected { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Gender()
+        {
+            this.Student = new HashSet<Student>();
+        }
     
-        public virtual Gender Gender { get; set; }
-        public virtual Group Group { get; set; }
-        public virtual Passport Passport { get; set; }
+        public int ID { get; set; }
+        public string Title { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Student> Student { get; set; }
     }
 }

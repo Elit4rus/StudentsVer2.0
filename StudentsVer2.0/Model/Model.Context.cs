@@ -25,6 +25,7 @@ namespace StudentsVer2._0.Model
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Gender> Gender { get; set; }
         public virtual DbSet<Group> Group { get; set; }
         public virtual DbSet<Passport> Passport { get; set; }
         public virtual DbSet<Role> Role { get; set; }
