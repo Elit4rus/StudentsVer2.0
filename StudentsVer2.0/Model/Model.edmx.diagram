@@ -5,13 +5,13 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="8469d57d9e3e4d8c977fbf8b8fd72c66" Name="Diagram1">
-        <EntityTypeShape EntityType="StudentsDBModel.Gender" Width="1.5" PointX="3.75" PointY="2.625" />
-        <EntityTypeShape EntityType="StudentsDBModel.Group" Width="1.5" PointX="0.75" PointY="5.25" />
-        <EntityTypeShape EntityType="StudentsDBModel.Passport" Width="1.5" PointX="3.75" PointY="8" />
-        <EntityTypeShape EntityType="StudentsDBModel.Role" Width="1.5" PointX="1.5" PointY="9.5" />
-        <EntityTypeShape EntityType="StudentsDBModel.Student" Width="1.5" PointX="6" PointY="4.5" />
-        <EntityTypeShape EntityType="StudentsDBModel.User" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="StudentsDBModel.UserGroup" Width="1.5" PointX="3" PointY="5.125" />
+        <EntityTypeShape EntityType="StudentsDBModel.Gender" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="StudentsDBModel.Group" Width="1.5" PointX="0.75" PointY="3.25" />
+        <EntityTypeShape EntityType="StudentsDBModel.Passport" Width="1.5" PointX="0.75" PointY="6.125" />
+        <EntityTypeShape EntityType="StudentsDBModel.Role" Width="1.5" PointX="1.5" PointY="10.375" />
+        <EntityTypeShape EntityType="StudentsDBModel.Student" Width="1.5" PointX="3" PointY="2.5" />
+        <EntityTypeShape EntityType="StudentsDBModel.User" Width="1.5" PointX="3.75" PointY="9.875" />
+        <EntityTypeShape EntityType="StudentsDBModel.UserGroup" Width="1.5" PointX="6" PointY="3.25" />
         <AssociationConnector Association="StudentsDBModel.FK_Student_Gender" />
         <AssociationConnector Association="StudentsDBModel.FK_Student_Group" />
         <AssociationConnector Association="StudentsDBModel.FK_UserGroup_Group" />

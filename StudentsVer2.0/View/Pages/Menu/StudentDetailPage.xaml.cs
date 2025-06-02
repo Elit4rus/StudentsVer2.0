@@ -42,7 +42,6 @@ namespace StudentsVer2._0.View.Pages.Menu
                 PassportIconImg.Source = new BitmapImage(new Uri("/Resource/Image/check.png", UriKind.Relative));
                 PassportTextTbl.Text = "Паспорт заполнен";
                 PassportTextTbl.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#6C6C6C"));
-
             }
             else
             {

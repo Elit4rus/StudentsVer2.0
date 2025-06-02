@@ -42,13 +42,7 @@ namespace StudentsVer2._0.View.Windows.Menu
             if (AuthorizationHelper.currentUser.RoleID != 1)
             {
                 ImportBtn.Visibility = Visibility.Collapsed;
-            }
-            if (AuthorizationHelper.currentUser.RoleID != 1)
-            {
                 AddStudentBtn.Visibility = Visibility.Collapsed;
-            }
-            if (AuthorizationHelper.currentUser.RoleID != 1)
-            {
                 DeleteStudentBtn.Visibility = Visibility.Collapsed;
             }
         }
@@ -97,17 +91,12 @@ namespace StudentsVer2._0.View.Windows.Menu
                             where student.GroupID == groupID
                             select student).ToList();
             }
-            else if (userRoleID == 2) // Преподаватель
-            {
-                // Преподаватель видит студентов, связанных с его группами
-                students = (from student in App.context.Student
-                            join userGroup in App.context.UserGroup on student.GroupID equals userGroup.GroupID
-                            where userGroup.UserID == AuthorizationHelper.currentUser.RoleID && student.GroupID == groupID
-                            select student).ToList();
-            }
             else
             {
-                students = new List<Student>();
+                // Преподаватель видит студентов, связанных с его группами
+                students = App.context.Student.Where(s => s.GroupID == groupID && App.context.UserGroup.Any(ug =>
+                   ug.GroupID == groupID &&
+                   ug.UserID == AuthorizationHelper.currentUser.ID)).ToList();
             }
             // Загружаем данные в ListView
             StudentsLv.ItemsSource = students;
@@ -139,151 +128,110 @@ namespace StudentsVer2._0.View.Windows.Menu
 
         private void ImportBtn_Click(object sender, RoutedEventArgs e)
         {
-            ChoiseCuratorWindow choiseCuratorWindow = new ChoiseCuratorWindow();
-            choiseCuratorWindow.ShowDialog();
 
-            var dialog = new OpenFileDialog { Filter = "Excel Files|*.xls;*.xlsx;*.xlsm" };
+            var choiseWindow = new ChoiseCuratorWindow();
+            if (choiseWindow.ShowDialog() != true) return;
 
-            if (dialog.ShowDialog() == true)
+            var openFileDialog = new OpenFileDialog { Filter = "Excel Files|*.xls;*.xlsx;*.xlsm" };
+            if (openFileDialog.ShowDialog() != true) return;
+
+            try
             {
-                try
+                using (var workbook = new XLWorkbook(openFileDialog.FileName))
+                using (var context = new StudentEntities())
                 {
-                    using (var workbook = new XLWorkbook(dialog.FileName))
+                    var worksheet = workbook.Worksheet(1);
+                    var rows = worksheet.RowsUsed().Skip(1); // Пропускаем заголовок
+
+                    int addedStudents = 0;
+                    int currentGroupId = 0;
+                    Group currentGroup = null;
+
+                    foreach (var row in rows)
                     {
-                        var worksheet = workbook.Worksheet(1);
-                        var rows = worksheet.RowsUsed().Skip(1); // Пропускаем заголовок
+                        var groupTitle = row.Cell(5).GetString().Trim();
+                        if (string.IsNullOrEmpty(groupTitle)) continue;
 
-                        int added = 0, skipped = 0;
-                        var transaction = App.context.Database.BeginTransaction();
+                        // Создание/получение группы
+                        currentGroup = context.Group.FirstOrDefault(g => g.Title == groupTitle)
+                            ?? new Group { Title = groupTitle };
 
-                        foreach (var row in rows)
+                        if (currentGroup.ID == 0)
                         {
-                            try
-                            {
-                                var groupTitle = row.Cell(5).GetString().Trim();
-                                if (string.IsNullOrEmpty(groupTitle))
-                                {
-                                    skipped++;
-                                    continue;
-                                }
+                            context.Group.Add(currentGroup);
+                            context.SaveChanges();
+                        }
+                        currentGroupId = currentGroup.ID;
 
-                                // Получаем или создаем группу
-                                var group = App.context.Group.FirstOrDefault(g => g.Title == groupTitle)
-                                    ?? new Group { Title = groupTitle };
+                        // Парсинг данных студента
+                        var surname = row.Cell(2).GetString().Trim();
+                        var name = row.Cell(3).GetString().Trim();
+                        var patronymic = row.Cell(4).GetString().Trim();
+                        var birthDate = row.Cell(6).GetDateTime();
+                        var gender = row.Cell(7).GetString().Trim().ToLower();
 
-                                if (group.ID == 0)
-                                {
-                                    App.context.Group.Add(group);
-                                    App.context.SaveChanges(); // Сохраняем для получения ID
-                                }
-
-                                // Проверяем существование студента
-                                var surname = row.Cell(2).GetString().Trim();
-                                var name = row.Cell(3).GetString().Trim();
-                                var patronymic = row.Cell(4).GetString().Trim();
-
-                                if (App.context.Student.Any(s =>
-                                    s.Surname == surname &&
-                                    s.Name == name &&
-                                    s.Patronymic == patronymic &&
-                                    s.GroupID == group.ID))
-                                {
-                                    skipped++;
-                                    continue;
-                                }
-
-                                // Парсим дату рождения
-                                if (!DateTime.TryParse(row.Cell(6).GetString(), out var birthDate))
-                                {
-                                    skipped++;
-                                    continue;
-                                }
-
-                                // Определяем пол
-                                var genderInput = row.Cell(7).GetString().Trim().ToLower();
-                                var gender = App.context.Gender.FirstOrDefault(g => g.Title == genderInput)
-                                    ?? App.context.Gender.First(); // По умолчанию
-
-                                // Создаем студента
-                                var student = new Student
-                                {
-                                    Surname = surname,
-                                    Name = name,
-                                    Patronymic = patronymic,
-                                    BirthDay = birthDate,
-                                    GenderID = gender.ID,
-                                    GroupID = group.ID
-                                };
-
-                                App.context.Student.Add(student);
-                                added++;
-                            }
-                            catch { skipped++; }
+                        // Проверка дубликатов
+                        if (context.Student.Any(s =>
+                            s.Surname == surname &&
+                            s.Name == name &&
+                            s.Patronymic == patronymic &&
+                            s.GroupID == currentGroupId))
+                        {
+                            continue;
                         }
 
-                        try
+                        // Создание студента
+                        var student = new Student
                         {
-                            App.context.SaveChanges();
-                            transaction.Commit();
-                            MessageBox.Show($"Импорт завершен!\nДобавлено: {added}\nПропущено: {skipped}");
-                        }
-                        catch
-                        {
-                            transaction.Rollback();
-                            throw;
-                        }
+                            Surname = surname,
+                            Name = name,
+                            Patronymic = string.IsNullOrEmpty(patronymic) ? null : patronymic,
+                            BirthDay = birthDate,
+                            GenderID = gender == "ж" ? 2 : 1,
+                            GroupID = currentGroupId
+                        };
+
+                        context.Student.Add(student);
+                        addedStudents++;
                     }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Ошибка импорта: {ex.Message}");
+
+                    context.SaveChanges();
+
+                    // Обработка связей UserGroup
+                    var selectedCurator = CuratorHelper.selectedCurator;
+                    if (!context.UserGroup.Any(ug =>
+                        ug.GroupID == currentGroupId && ug.UserID == selectedCurator.ID))
+                    {
+                        context.UserGroup.Add(new UserGroup
+                        {
+                            GroupID = currentGroupId,
+                            UserID = selectedCurator.ID
+                        });
+
+                        // Добавление администратора если куратор не админ
+                        if (selectedCurator.RoleID != 1 &&
+                            !context.UserGroup.Any(ug =>
+                                ug.GroupID == currentGroupId && ug.UserID == 1))
+                        {
+                            context.UserGroup.Add(new UserGroup
+                            {
+                                GroupID = currentGroupId,
+                                UserID = 1
+                            });
+                        }
+
+                        context.SaveChanges();
+                    }
+
+                    MessageBox.Show($"Импорт завершен! Добавлено студентов: {addedStudents}");
+                    LoadGroups(AuthorizationHelper.currentUser.ID);
                 }
             }
-
-            LoadGroups(AuthorizationHelper.currentUser.ID);
-        }
-        private string GetCellValue(IXLRow row, int column)
-        {
-            return row.Cell(column).GetString().Trim();
-        }
-        private DateTime? ParseDate(string dateString)
-        {
-            if (DateTime.TryParse(dateString, out DateTime result))
-                return result;
-            return null;
-        }
-        private int ParseGender(StudentEntities context, string gender)
-        {
-            if (string.IsNullOrWhiteSpace(gender))
-                return 1;
-
-            Gender genderEntity = context.Gender
-                .FirstOrDefault(g => g.Title == gender.Trim().ToLower());
-
-            return (int)(genderEntity?.ID); // Вернет ID или null, если пол не найден
-        }
-        private Group GetOrCreateGroup(StudentEntities context, string groupTitle)
-        {
-            var group = context.Group.FirstOrDefault(g => g.Title == groupTitle);
-
-            if (group == null)
+            catch (Exception ex)
             {
-                group = new Group { Title = groupTitle };
-                context.Group.Add(group);
+                MessageBox.Show($"Ошибка импорта: {ex.Message}");
             }
-
-            return group;
         }
-
-        private bool IsStudentExists(StudentEntities context, string surname, string name, string patronymic, int groupId)
-        {
-            return context.Student.Any(s =>
-                s.Surname.Equals(surname) &&
-                s.Name.Equals(name) &&
-                (s.Patronymic == patronymic || (s.Patronymic == null && patronymic == "")) &&
-                s.GroupID == groupId);
-        }
-
         private void AddStudentBtn_Click(object sender, RoutedEventArgs e)
         {
             var addWindow = new AddStudentWindow();
