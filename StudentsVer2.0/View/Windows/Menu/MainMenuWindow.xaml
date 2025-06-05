@@ -142,8 +142,8 @@
                 </ListView>
                 <!--#endregion-->
             </Grid>
-            <Frame Grid.RowSpan="3" Name="MainFrame" NavigationUIVisibility="Hidden"/>
             <Button x:Name="DeleteStudentBtn" Content="Удалить студента"  FontSize="20" Grid.Row="2" Width="200" Height="40" HorizontalAlignment="Right" Margin="0 0 30 0" Click="DeleteStudentBtn_Click"/>
+            <Frame Grid.RowSpan="3" Name="MainFrame" NavigationUIVisibility="Hidden"/>
         </Grid>
     </Grid>
 </Window>

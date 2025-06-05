@@ -23,9 +23,15 @@ namespace StudentsVer2._0.Model
         public Nullable<int> GenderID { get; set; }
         public Nullable<int> PassportID { get; set; }
         public bool IsSelected { get; set; }
+        public Nullable<int> MilitaryCertificateID { get; set; }
+        public Nullable<int> INNID { get; set; }
+        public Nullable<int> InsuranceNumberID { get; set; }
     
         public virtual Gender Gender { get; set; }
         public virtual Group Group { get; set; }
+        public virtual INN INN { get; set; }
+        public virtual InsuranceNumber InsuranceNumber { get; set; }
+        public virtual MilitaryCertificate MilitaryCertificate { get; set; }
         public virtual Passport Passport { get; set; }
     }
 }

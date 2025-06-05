@@ -19,6 +19,38 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="30" Nullable="false" />
         </EntityType>
+        <EntityType Name="HealthCategory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="INN">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Number" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="DateIssue" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="InsuranceNumber">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Number" Type="nvarchar" MaxLength="30" />
+          <Property Name="DateRegistration" Type="date" />
+        </EntityType>
+        <EntityType Name="MilitaryCertificate">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="SeriesAndNumber" Type="nvarchar" MaxLength="14" Nullable="false" />
+          <Property Name="HealthCategoryID" Type="int" Nullable="false" />
+          <Property Name="DateRegistration" Type="date" Nullable="false" />
+        </EntityType>
         <EntityType Name="Passport">
           <Key>
             <PropertyRef Name="ID" />
@@ -51,6 +83,9 @@
           <Property Name="GenderID" Type="int" />
           <Property Name="PassportID" Type="int" />
           <Property Name="IsSelected" Type="bit" Nullable="false" />
+          <Property Name="MilitaryCertificateID" Type="int" />
+          <Property Name="INNID" Type="int" />
+          <Property Name="InsuranceNumberID" Type="int" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -72,6 +107,18 @@
           <Property Name="GroupID" Type="int" />
           <Property Name="UserID" Type="int" />
         </EntityType>
+        <Association Name="FK_MilitaryCertificate_HealthCategory">
+          <End Role="HealthCategory" Type="Self.HealthCategory" Multiplicity="1" />
+          <End Role="MilitaryCertificate" Type="Self.MilitaryCertificate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HealthCategory">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MilitaryCertificate">
+              <PropertyRef Name="HealthCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Student_Gender">
           <End Role="Gender" Type="Self.Gender" Multiplicity="0..1" />
           <End Role="Student" Type="Self.Student" Multiplicity="*" />
@@ -95,6 +142,42 @@
             </Principal>
             <Dependent Role="Student">
               <PropertyRef Name="GroupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_INN">
+          <End Role="INN" Type="Self.INN" Multiplicity="0..1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="INN">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="INNID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_InsuranceNumber">
+          <End Role="InsuranceNumber" Type="Self.InsuranceNumber" Multiplicity="0..1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InsuranceNumber">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="InsuranceNumberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_MilitaryCertificate">
+          <End Role="MilitaryCertificate" Type="Self.MilitaryCertificate" Multiplicity="0..1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MilitaryCertificate">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="MilitaryCertificateID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -151,17 +234,37 @@
         <EntityContainer Name="Хранилище StudentsDBModelContainer">
           <EntitySet Name="Gender" EntityType="Self.Gender" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Group" EntityType="Self.Group" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HealthCategory" EntityType="Self.HealthCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="INN" EntityType="Self.INN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InsuranceNumber" EntityType="Self.InsuranceNumber" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MilitaryCertificate" EntityType="Self.MilitaryCertificate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Passport" EntityType="Self.Passport" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserGroup" EntityType="Self.UserGroup" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_MilitaryCertificate_HealthCategory" Association="Self.FK_MilitaryCertificate_HealthCategory">
+            <End Role="HealthCategory" EntitySet="HealthCategory" />
+            <End Role="MilitaryCertificate" EntitySet="MilitaryCertificate" />
+          </AssociationSet>
           <AssociationSet Name="FK_Student_Gender" Association="Self.FK_Student_Gender">
             <End Role="Gender" EntitySet="Gender" />
             <End Role="Student" EntitySet="Student" />
           </AssociationSet>
           <AssociationSet Name="FK_Student_Group" Association="Self.FK_Student_Group">
             <End Role="Group" EntitySet="Group" />
+            <End Role="Student" EntitySet="Student" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_INN" Association="Self.FK_Student_INN">
+            <End Role="INN" EntitySet="INN" />
+            <End Role="Student" EntitySet="Student" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_InsuranceNumber" Association="Self.FK_Student_InsuranceNumber">
+            <End Role="InsuranceNumber" EntitySet="InsuranceNumber" />
+            <End Role="Student" EntitySet="Student" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_MilitaryCertificate" Association="Self.FK_Student_MilitaryCertificate">
+            <End Role="MilitaryCertificate" EntitySet="MilitaryCertificate" />
             <End Role="Student" EntitySet="Student" />
           </AssociationSet>
           <AssociationSet Name="FK_Student_Passport1" Association="Self.FK_Student_Passport1">
@@ -188,6 +291,10 @@
         <EntityContainer Name="StudentEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Gender" EntityType="StudentsDBModel.Gender" />
           <EntitySet Name="Group" EntityType="StudentsDBModel.Group" />
+          <EntitySet Name="HealthCategory" EntityType="StudentsDBModel.HealthCategory" />
+          <EntitySet Name="INN" EntityType="StudentsDBModel.INN" />
+          <EntitySet Name="InsuranceNumber" EntityType="StudentsDBModel.InsuranceNumber" />
+          <EntitySet Name="MilitaryCertificate" EntityType="StudentsDBModel.MilitaryCertificate" />
           <EntitySet Name="Passport" EntityType="StudentsDBModel.Passport" />
           <EntitySet Name="Role" EntityType="StudentsDBModel.Role" />
           <EntitySet Name="Student" EntityType="StudentsDBModel.Student" />
@@ -204,6 +311,22 @@
           <AssociationSet Name="FK_UserGroup_Group" Association="StudentsDBModel.FK_UserGroup_Group">
             <End Role="Group" EntitySet="Group" />
             <End Role="UserGroup" EntitySet="UserGroup" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MilitaryCertificate_HealthCategory" Association="StudentsDBModel.FK_MilitaryCertificate_HealthCategory">
+            <End Role="HealthCategory" EntitySet="HealthCategory" />
+            <End Role="MilitaryCertificate" EntitySet="MilitaryCertificate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_INN" Association="StudentsDBModel.FK_Student_INN">
+            <End Role="INN" EntitySet="INN" />
+            <End Role="Student" EntitySet="Student" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_InsuranceNumber" Association="StudentsDBModel.FK_Student_InsuranceNumber">
+            <End Role="InsuranceNumber" EntitySet="InsuranceNumber" />
+            <End Role="Student" EntitySet="Student" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_MilitaryCertificate" Association="StudentsDBModel.FK_Student_MilitaryCertificate">
+            <End Role="MilitaryCertificate" EntitySet="MilitaryCertificate" />
+            <End Role="Student" EntitySet="Student" />
           </AssociationSet>
           <AssociationSet Name="FK_Student_Passport1" Association="StudentsDBModel.FK_Student_Passport1">
             <End Role="Passport" EntitySet="Passport" />
@@ -234,6 +357,43 @@
           <Property Name="Title" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Student" Relationship="StudentsDBModel.FK_Student_Group" FromRole="Group" ToRole="Student" />
           <NavigationProperty Name="UserGroup" Relationship="StudentsDBModel.FK_UserGroup_Group" FromRole="Group" ToRole="UserGroup" />
+        </EntityType>
+        <EntityType Name="HealthCategory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MilitaryCertificate" Relationship="StudentsDBModel.FK_MilitaryCertificate_HealthCategory" FromRole="HealthCategory" ToRole="MilitaryCertificate" />
+        </EntityType>
+        <EntityType Name="INN">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Number" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="DateIssue" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Student" Relationship="StudentsDBModel.FK_Student_INN" FromRole="INN" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="InsuranceNumber">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Number" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="DateRegistration" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Student" Relationship="StudentsDBModel.FK_Student_InsuranceNumber" FromRole="InsuranceNumber" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="MilitaryCertificate">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="SeriesAndNumber" Type="String" Nullable="false" MaxLength="14" FixedLength="false" Unicode="true" />
+          <Property Name="HealthCategoryID" Type="Int32" Nullable="false" />
+          <Property Name="DateRegistration" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="HealthCategory" Relationship="StudentsDBModel.FK_MilitaryCertificate_HealthCategory" FromRole="MilitaryCertificate" ToRole="HealthCategory" />
+          <NavigationProperty Name="Student" Relationship="StudentsDBModel.FK_Student_MilitaryCertificate" FromRole="MilitaryCertificate" ToRole="Student" />
         </EntityType>
         <EntityType Name="Passport">
           <Key>
@@ -269,8 +429,14 @@
           <Property Name="GenderID" Type="Int32" />
           <Property Name="PassportID" Type="Int32" />
           <Property Name="IsSelected" Type="Boolean" Nullable="false" />
+          <Property Name="MilitaryCertificateID" Type="Int32" />
+          <Property Name="INNID" Type="Int32" />
+          <Property Name="InsuranceNumberID" Type="Int32" />
           <NavigationProperty Name="Gender" Relationship="StudentsDBModel.FK_Student_Gender" FromRole="Student" ToRole="Gender" />
           <NavigationProperty Name="Group" Relationship="StudentsDBModel.FK_Student_Group" FromRole="Student" ToRole="Group" />
+          <NavigationProperty Name="INN" Relationship="StudentsDBModel.FK_Student_INN" FromRole="Student" ToRole="INN" />
+          <NavigationProperty Name="InsuranceNumber" Relationship="StudentsDBModel.FK_Student_InsuranceNumber" FromRole="Student" ToRole="InsuranceNumber" />
+          <NavigationProperty Name="MilitaryCertificate" Relationship="StudentsDBModel.FK_Student_MilitaryCertificate" FromRole="Student" ToRole="MilitaryCertificate" />
           <NavigationProperty Name="Passport" Relationship="StudentsDBModel.FK_Student_Passport1" FromRole="Student" ToRole="Passport" />
         </EntityType>
         <EntityType Name="User">
@@ -337,6 +503,54 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_MilitaryCertificate_HealthCategory">
+          <End Type="StudentsDBModel.HealthCategory" Role="HealthCategory" Multiplicity="1" />
+          <End Type="StudentsDBModel.MilitaryCertificate" Role="MilitaryCertificate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HealthCategory">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MilitaryCertificate">
+              <PropertyRef Name="HealthCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_INN">
+          <End Type="StudentsDBModel.INN" Role="INN" Multiplicity="0..1" />
+          <End Type="StudentsDBModel.Student" Role="Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="INN">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="INNID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_InsuranceNumber">
+          <End Type="StudentsDBModel.InsuranceNumber" Role="InsuranceNumber" Multiplicity="0..1" />
+          <End Type="StudentsDBModel.Student" Role="Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InsuranceNumber">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="InsuranceNumberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_MilitaryCertificate">
+          <End Type="StudentsDBModel.MilitaryCertificate" Role="MilitaryCertificate" Multiplicity="0..1" />
+          <End Type="StudentsDBModel.Student" Role="Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MilitaryCertificate">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="MilitaryCertificateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Student_Passport1">
           <End Type="StudentsDBModel.Passport" Role="Passport" Multiplicity="0..1" />
           <End Type="StudentsDBModel.Student" Role="Student" Multiplicity="*" />
@@ -395,6 +609,42 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="HealthCategory">
+            <EntityTypeMapping TypeName="StudentsDBModel.HealthCategory">
+              <MappingFragment StoreEntitySet="HealthCategory">
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="INN">
+            <EntityTypeMapping TypeName="StudentsDBModel.INN">
+              <MappingFragment StoreEntitySet="INN">
+                <ScalarProperty Name="DateIssue" ColumnName="DateIssue" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InsuranceNumber">
+            <EntityTypeMapping TypeName="StudentsDBModel.InsuranceNumber">
+              <MappingFragment StoreEntitySet="InsuranceNumber">
+                <ScalarProperty Name="DateRegistration" ColumnName="DateRegistration" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MilitaryCertificate">
+            <EntityTypeMapping TypeName="StudentsDBModel.MilitaryCertificate">
+              <MappingFragment StoreEntitySet="MilitaryCertificate">
+                <ScalarProperty Name="DateRegistration" ColumnName="DateRegistration" />
+                <ScalarProperty Name="HealthCategoryID" ColumnName="HealthCategoryID" />
+                <ScalarProperty Name="SeriesAndNumber" ColumnName="SeriesAndNumber" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Passport">
             <EntityTypeMapping TypeName="StudentsDBModel.Passport">
               <MappingFragment StoreEntitySet="Passport">
@@ -419,6 +669,9 @@
           <EntitySetMapping Name="Student">
             <EntityTypeMapping TypeName="StudentsDBModel.Student">
               <MappingFragment StoreEntitySet="Student">
+                <ScalarProperty Name="InsuranceNumberID" ColumnName="InsuranceNumberID" />
+                <ScalarProperty Name="INNID" ColumnName="INNID" />
+                <ScalarProperty Name="MilitaryCertificateID" ColumnName="MilitaryCertificateID" />
                 <ScalarProperty Name="IsSelected" ColumnName="IsSelected" />
                 <ScalarProperty Name="PassportID" ColumnName="PassportID" />
                 <ScalarProperty Name="GenderID" ColumnName="GenderID" />
