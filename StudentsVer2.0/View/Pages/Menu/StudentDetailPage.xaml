@@ -96,7 +96,9 @@
                     <Border x:Name="PassportBorder" CornerRadius="3" Grid.Row="4" Margin="30 0" Width="201" HorizontalAlignment="Left" Height="170">
                         <Border.Style>
                             <Style TargetType="Border">
-                                <Setter Property="Background">
+                                <!-- Установка начального стиля -->
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderBrush">
                                     <Setter.Value>
                                         <VisualBrush>
                                             <VisualBrush.Visual>
@@ -105,15 +107,13 @@
                                         </VisualBrush>
                                     </Setter.Value>
                                 </Setter>
+                                <Setter Property="BorderThickness" Value="2"/>
+                                <!-- Изменение стиля при наведении -->
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background">
+                                        <Setter Property="BorderBrush">
                                             <Setter.Value>
-                                                <VisualBrush>
-                                                    <VisualBrush.Visual>
-                                                        <Rectangle Stroke="#5367D3" StrokeThickness="2" Width="100" Height="100" RadiusX="2" RadiusY="2"/>
-                                                    </VisualBrush.Visual>
-                                                </VisualBrush>
+                                                <SolidColorBrush Color="#5367D3"/>
                                             </Setter.Value>
                                         </Setter>
                                     </Trigger>
@@ -128,15 +128,17 @@
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="1*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock x:Name="PassportTextTbl" Grid.Row="3" Foreground="#5367D3" FontSize="17" Text="Заполнить паспорт" Margin="30 0" TextWrapping="Wrap" TextAlignment="Center"/>
                             <Image x:Name="PassportIconImg" Source="/Resource/Icons/Group 17.png" Grid.Row="1"/>
+                            <TextBlock x:Name="PassportTextTbl" Grid.Row="3" Foreground="#5367D3" FontSize="17" Text="Заполнить паспорт" Margin="30 0" TextWrapping="Wrap" TextAlignment="Center"/>
                         </Grid>
                     </Border>
 
                     <Border x:Name="MilitaryCertificateBorder" CornerRadius="3" Grid.Row="4" Margin="30 0" Width="201" HorizontalAlignment="Left" Height="170">
                         <Border.Style>
                             <Style TargetType="Border">
-                                <Setter Property="Background">
+                                <!-- Установка начального стиля -->
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderBrush">
                                     <Setter.Value>
                                         <VisualBrush>
                                             <VisualBrush.Visual>
@@ -145,15 +147,13 @@
                                         </VisualBrush>
                                     </Setter.Value>
                                 </Setter>
+                                <Setter Property="BorderThickness" Value="2"/>
+                                <!-- Изменение стиля при наведении -->
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background">
+                                        <Setter Property="BorderBrush">
                                             <Setter.Value>
-                                                <VisualBrush>
-                                                    <VisualBrush.Visual>
-                                                        <Rectangle Stroke="#5367D3" StrokeThickness="2" Width="100" Height="100" RadiusX="2" RadiusY="2"/>
-                                                    </VisualBrush.Visual>
-                                                </VisualBrush>
+                                                <SolidColorBrush Color="#5367D3"/>
                                             </Setter.Value>
                                         </Setter>
                                     </Trigger>
@@ -168,8 +168,8 @@
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="1*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="3" Foreground="#5367D3" FontSize="17" Text="Заполнить приписное св-во" Margin="30 0" TextWrapping="Wrap" TextAlignment="Center"/>
-                            <Image Source="/Resource/Icons/Group 17.png" Grid.Row="1"/>
+                            <Image x:Name="MilitaryCertificateIconImg" Source="/Resource/Icons/Group 17.png" Grid.Row="1"/>
+                            <TextBlock x:Name="MilitaryCertificateTbl" Grid.Row="3" Foreground="#5367D3" FontSize="17" Text="Заполнить приписное св-во" Margin="30 0" TextWrapping="Wrap" TextAlignment="Center"/>
                         </Grid>
                     </Border>
 

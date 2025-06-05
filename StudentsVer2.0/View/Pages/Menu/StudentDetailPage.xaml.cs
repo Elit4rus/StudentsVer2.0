@@ -19,14 +19,18 @@ namespace StudentsVer2._0.View.Pages.Menu
         {
             InitializeComponent();
 
-            PassportBorder.MouseLeftButtonDown += OnDesignElementClicked;
+            PassportBorder.MouseLeftButtonDown += PassportClick;
+            MilitaryCertificateBorder.MouseLeftButtonDown += MilitaryCertificateClick;
 
             SurnameTbl.Text = student.Surname;
             NameTbl.Text = student.Name;
             PatronymicTbl.Text = student.Patronymic ?? "Нет данных"; // Если отчество отсутствует
             GroupTbl.Text = groupTitle;
 
-            UpdatePassportIcon();
+            if (SelectedStudentHelper.selectedStudent.PassportID != null)
+            {
+                UpdatePassportIcon();
+            }
 
             if (SelectedStudentHelper.selectedStudent.GenderID == 2)
             {
@@ -36,22 +40,49 @@ namespace StudentsVer2._0.View.Pages.Menu
 
         private void UpdatePassportIcon()
         {
+            var border = PassportBorder;
+            var image = PassportIconImg;
+            var textBlock = PassportTextTbl;
+
             if (SelectedStudentHelper.selectedStudent.PassportID != null)
             {
                 // Меняем на серую иконку, если паспорт есть
-                PassportIconImg.Source = new BitmapImage(new Uri("/Resource/Image/check.png", UriKind.Relative));
-                PassportTextTbl.Text = "Паспорт заполнен";
-                PassportTextTbl.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#6C6C6C"));
+                border.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#6C6C6C"));
+                image.Source = new BitmapImage(new Uri("/Resource/Image/check.png", UriKind.Relative));
+                textBlock.Text = "Паспорт заполнен";
+                textBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#6C6C6C"));
             }
             else
             {
                 // Или оставляем стандартную, если нет
-                PassportIconImg.Source = new BitmapImage(new Uri("/Resource/Icons/Group 17.png", UriKind.Relative));
-                PassportTextTbl.Text = "Заполнить паспорт";
+                border.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5367D3"));
+                image.Source = new BitmapImage(new Uri("/Resource/Icons/Group 17.png", UriKind.Relative));
+                textBlock.Text = "Заполнить паспорт";
+                textBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5367D3"));
             }
         }
 
-        private void OnDesignElementClicked(object sender, MouseButtonEventArgs e)
+        private void UpdateMilitaryCertificateIcon()
+        {
+            if (SelectedStudentHelper.selectedStudent.MilitaryCertificateID != null)
+            {
+                // Меняем на серую иконку, если данные заполнены
+                MilitaryCertificateBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#6C6C6C"));
+                MilitaryCertificateIconImg.Source = new BitmapImage(new Uri("/Resource/Image/check.png", UriKind.Relative));
+                MilitaryCertificateTbl.Text = "Приписное заполнено";
+                MilitaryCertificateTbl.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#6C6C6C"));
+            }
+            else
+            {
+                // Или оставляем стандартную, если нет
+                MilitaryCertificateBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5367D3"));
+                MilitaryCertificateIconImg.Source = new BitmapImage(new Uri("/Resource/Icons/Group 17.png", UriKind.Relative));
+                MilitaryCertificateTbl.Text = "Заполнить приписное свво";
+                MilitaryCertificateTbl.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5367D3"));
+            }
+        }
+
+        private void PassportClick(object sender, MouseButtonEventArgs e)
         {
 
             PassportWindow passportWindow = new PassportWindow();
@@ -61,6 +92,17 @@ namespace StudentsVer2._0.View.Pages.Menu
                 UpdatePassportIcon();
             }
 
+        }
+
+        private void MilitaryCertificateClick(object sender, MouseButtonEventArgs e)
+        {
+            // Здесь откройте окно для заполнения данных военного билета
+            MilitaryCertificateWindow militaryCertificateWindow = new MilitaryCertificateWindow();
+            if (militaryCertificateWindow.ShowDialog() == true)
+            {
+                // Обновляем иконку после закрытия окна, если данные были сохранены
+                UpdateMilitaryCertificateIcon();
+            }
         }
 
         private void BackBtn_Click(object sender, System.Windows.RoutedEventArgs e)

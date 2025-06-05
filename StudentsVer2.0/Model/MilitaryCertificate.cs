@@ -22,10 +22,8 @@ namespace StudentsVer2._0.Model
     
         public int ID { get; set; }
         public string SeriesAndNumber { get; set; }
-        public int HealthCategoryID { get; set; }
         public System.DateTime DateRegistration { get; set; }
     
-        public virtual HealthCategory HealthCategory { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Student> Student { get; set; }
     }

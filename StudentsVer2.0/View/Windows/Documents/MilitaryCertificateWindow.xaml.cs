@@ -23,5 +23,15 @@ namespace StudentsVer2._0.View.Windows.Documents
         {
             InitializeComponent();
         }
+
+        private void SaveBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BackBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

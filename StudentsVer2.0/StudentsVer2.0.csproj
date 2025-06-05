@@ -135,9 +135,6 @@
     <Compile Include="Model\Group.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\HealthCategory.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\INN.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>

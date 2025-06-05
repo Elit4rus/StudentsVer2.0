@@ -67,6 +67,7 @@ namespace StudentsVer2._0.View.Windows.Documents
                             SelectedStudentHelper.selectedStudent.PassportID = null;
                             App.context.SaveChanges();
                             MessageBox.Show("Паспорт удален!", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+                            DialogResult = true;
                         }
                     }
                     else
@@ -91,6 +92,7 @@ namespace StudentsVer2._0.View.Windows.Documents
 
                         App.context.SaveChanges();
                         MessageBox.Show("Данные паспорта обновлены!", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+                        DialogResult = true;
                     }
                 }
                 else
@@ -113,6 +115,7 @@ namespace StudentsVer2._0.View.Windows.Documents
                     App.context.SaveChanges();
 
                     MessageBox.Show("Данные паспорта добавлены!", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+                    DialogResult = true;
                 }
             }
             catch (Exception ex)

@@ -27,7 +27,6 @@ namespace StudentsVer2._0.Model
     
         public virtual DbSet<Gender> Gender { get; set; }
         public virtual DbSet<Group> Group { get; set; }
-        public virtual DbSet<HealthCategory> HealthCategory { get; set; }
         public virtual DbSet<INN> INN { get; set; }
         public virtual DbSet<InsuranceNumber> InsuranceNumber { get; set; }
         public virtual DbSet<MilitaryCertificate> MilitaryCertificate { get; set; }
