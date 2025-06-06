@@ -30,7 +30,7 @@
 
                 <TextBlock Text="Дата принятия на воинский учёт" Grid.Row="3" FontSize="20" Foreground="#565656"/>
                 <Image Grid.Row="4" Source="/Resource/Image/TextBox2.png" />
-                <TextBox x:Name="DateRegistrationTb" Grid.Row="4" FontSize="20" Margin="10 0 10 0" Foreground="Black" />
+                <TextBox x:Name="DateRegistrationTb" Grid.Row="4" FontSize="20" Margin="10 0 10 0" Foreground="Black" TextChanged="DateRegistrationTb_TextChanged" PreviewTextInput="DateRegistrationTb_PreviewTextInput"/>
             </Grid>
 
             <Grid Grid.Row="1">

@@ -32,6 +32,11 @@ namespace StudentsVer2._0.View.Pages.Menu
                 UpdatePassportIcon();
             }
 
+            if (SelectedStudentHelper.selectedStudent.MilitaryCertificateID != null)
+            {
+                UpdateMilitaryCertificateIcon();
+            }
+
             if (SelectedStudentHelper.selectedStudent.GenderID == 2)
             {
                 MilitaryCertificateBorder.Visibility = Visibility.Collapsed;
@@ -64,21 +69,25 @@ namespace StudentsVer2._0.View.Pages.Menu
 
         private void UpdateMilitaryCertificateIcon()
         {
+            var border = MilitaryCertificateBorder;
+            var image = MilitaryCertificateIconImg;
+            var textBlock = MilitaryCertificateTbl;
+
             if (SelectedStudentHelper.selectedStudent.MilitaryCertificateID != null)
             {
-                // Меняем на серую иконку, если данные заполнены
-                MilitaryCertificateBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#6C6C6C"));
-                MilitaryCertificateIconImg.Source = new BitmapImage(new Uri("/Resource/Image/check.png", UriKind.Relative));
-                MilitaryCertificateTbl.Text = "Приписное заполнено";
-                MilitaryCertificateTbl.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#6C6C6C"));
+                // Меняем на серую иконку, если паспорт есть
+                border.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#6C6C6C"));
+                image.Source = new BitmapImage(new Uri("/Resource/Image/check.png", UriKind.Relative));
+                textBlock.Text = "Приписное св-во заполнено";
+                textBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#6C6C6C"));
             }
             else
             {
                 // Или оставляем стандартную, если нет
-                MilitaryCertificateBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5367D3"));
-                MilitaryCertificateIconImg.Source = new BitmapImage(new Uri("/Resource/Icons/Group 17.png", UriKind.Relative));
-                MilitaryCertificateTbl.Text = "Заполнить приписное свво";
-                MilitaryCertificateTbl.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5367D3"));
+                border.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5367D3"));
+                image.Source = new BitmapImage(new Uri("/Resource/Icons/Group 17.png", UriKind.Relative));
+                textBlock.Text = "Заполнить паспорт";
+                textBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5367D3"));
             }
         }
 

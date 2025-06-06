@@ -39,7 +39,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SeriesAndNumber" Type="nvarchar" MaxLength="14" Nullable="false" />
           <Property Name="DateRegistration" Type="date" Nullable="false" />
         </EntityType>
@@ -350,7 +350,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="SeriesAndNumber" Type="String" Nullable="false" MaxLength="14" FixedLength="false" Unicode="true" />
           <Property Name="DateRegistration" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="Student" Relationship="StudentsDBModel.FK_Student_MilitaryCertificate" FromRole="MilitaryCertificate" ToRole="Student" />

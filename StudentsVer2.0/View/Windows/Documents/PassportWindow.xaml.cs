@@ -182,5 +182,121 @@ namespace StudentsVer2._0.View.Windows.Documents
             // Перемещаем курсор в конец текста
             textBox.CaretIndex = textBox.Text.Length;
         }
+
+        private void DateOfIssueTb_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            if (textBox == null) return;
+
+            string text = textBox.Text;
+
+            // Удаляем все нецифровые символы
+            string digitsOnly = new string(text.Where(char.IsDigit).ToArray());
+
+            // Форматируем текст
+            if (digitsOnly.Length > 4)
+            {
+                string day = digitsOnly.Substring(0, 2);
+                string month = digitsOnly.Substring(2, 2);
+                string year = digitsOnly.Substring(4);
+
+                // Проверка корректности дня (1-31) и месяца (1-12)
+                if (int.Parse(day) > 31 || int.Parse(month) > 12)
+                {
+                    textBox.Text = $"{digitsOnly.Substring(0, 2)}.{digitsOnly.Substring(2, 2)}.{digitsOnly.Substring(4)}";
+                }
+                else
+                {
+                    textBox.Text = $"{day}.{month}.{year}";
+                }
+            }
+            else if (digitsOnly.Length > 2)
+            {
+                textBox.Text = $"{digitsOnly.Substring(0, 2)}.{digitsOnly.Substring(2)}";
+            }
+            else
+            {
+                textBox.Text = digitsOnly;
+            }
+
+            // Перемещаем курсор в конец текста
+            textBox.CaretIndex = textBox.Text.Length;
+        }
+
+        private void DateOfIssueTb_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            if (textBox == null) return;
+
+            // Разрешаем ввод только цифр
+            if (!char.IsDigit(e.Text, e.Text.Length - 1))
+            {
+                e.Handled = true; // Отменяем ввод
+            }
+
+            // Проверяем, чтобы длина не превышала 10 символов (например, "23.03.2024")
+            if (textBox.Text.Length >= 10)
+            {
+                e.Handled = true; // Отменяем ввод
+            }
+        }
+
+        private void RegistrationDateTb_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            if (textBox == null) return;
+
+            string text = textBox.Text;
+
+            // Удаляем все нецифровые символы
+            string digitsOnly = new string(text.Where(char.IsDigit).ToArray());
+
+            // Форматируем текст
+            if (digitsOnly.Length > 4)
+            {
+                string day = digitsOnly.Substring(0, 2);
+                string month = digitsOnly.Substring(2, 2);
+                string year = digitsOnly.Substring(4);
+
+                // Проверка корректности дня (1-31) и месяца (1-12)
+                if (int.Parse(day) > 31 || int.Parse(month) > 12)
+                {
+                    textBox.Text = $"{digitsOnly.Substring(0, 2)}.{digitsOnly.Substring(2, 2)}.{digitsOnly.Substring(4)}";
+                }
+                else
+                {
+                    textBox.Text = $"{day}.{month}.{year}";
+                }
+            }
+            else if (digitsOnly.Length > 2)
+            {
+                textBox.Text = $"{digitsOnly.Substring(0, 2)}.{digitsOnly.Substring(2)}";
+            }
+            else
+            {
+                textBox.Text = digitsOnly;
+            }
+
+            // Перемещаем курсор в конец текста
+            textBox.CaretIndex = textBox.Text.Length;
+        }
+
+        private void RegistrationDateTb_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            if (textBox == null) return;
+
+            // Разрешаем ввод только цифр
+            if (!char.IsDigit(e.Text, e.Text.Length - 1))
+            {
+                e.Handled = true; // Отменяем ввод
+            }
+
+            // Проверяем, чтобы длина не превышала 10 символов (например, "23.03.2024")
+            if (textBox.Text.Length >= 10)
+            {
+                e.Handled = true; // Отменяем ввод
+            }
+        }
     }
 }

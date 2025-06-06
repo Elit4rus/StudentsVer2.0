@@ -19,8 +19,8 @@ namespace StudentsVer2._0.View.Windows.Login
             if (AuthorizationHelper.CheckData(LoginTb.Text, PasswordTb.Text) == true)
             {
                 MainMenuWindow mainMenuWindow = new MainMenuWindow();
-                mainMenuWindow.Show();
                 Close();
+                mainMenuWindow.Show();
             }
             else
             {

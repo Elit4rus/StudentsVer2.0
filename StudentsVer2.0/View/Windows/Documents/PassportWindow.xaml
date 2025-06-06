@@ -49,7 +49,7 @@
 
                 <TextBlock Grid.Row="3" Text="Дата выдачи" FontSize="20" Foreground="#565656"/>
                 <Image Grid.Row="4" Source="/Resource/Image/TextBox2.png" />
-                <TextBox x:Name="DateOfIssueTb" Grid.Row="4" FontSize="20" Margin="10 0 10 0" Foreground="Black"/>
+                <TextBox x:Name="DateOfIssueTb" Grid.Row="4" FontSize="20" Margin="10 0 10 0" Foreground="Black" TextChanged="DateOfIssueTb_TextChanged" PreviewTextInput="DateOfIssueTb_PreviewTextInput"/>
 
                 <TextBlock Grid.Row="6" Text="Код подразделения" FontSize="20" Foreground="#565656"/>
                 <Image Grid.Row="7" Source="/Resource/Image/TextBox2.png" />
@@ -63,7 +63,7 @@
 
                 <TextBlock Grid.Row="12" Text="Дата регистрации" FontSize="20" Foreground="#565656"/>
                 <Image Grid.Row="13" Source="/Resource/Image/TextBox2.png" />
-                <TextBox x:Name="RegistrationDateTb" Grid.Row="13" FontSize="20" Margin="10 0 10 0" Foreground="Black"/>
+                <TextBox x:Name="RegistrationDateTb" Grid.Row="13" FontSize="20" Margin="10 0 10 0" Foreground="Black" TextChanged="RegistrationDateTb_TextChanged" PreviewTextInput="RegistrationDateTb_PreviewTextInput"/>
 
                 <TextBlock Grid.Row="15" Text="Место жительства" FontSize="20" Foreground="#565656"/>
                 <Image Grid.Row="17" Source="/Resource/Image/BigTextBox.png"/>
