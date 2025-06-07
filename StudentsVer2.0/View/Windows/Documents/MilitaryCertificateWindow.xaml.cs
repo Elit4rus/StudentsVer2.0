@@ -173,5 +173,39 @@ namespace StudentsVer2._0.View.Windows.Documents
                 return result;
             return null;
         }
+
+        private void SeriesAndNumberTb_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            if (textBox == null) return;
+
+            string text = textBox.Text;
+
+            // Удаляем все нецифровые символы (на случай, если пользователь вставил текст)
+            string digitsOnly = new string(text.Where(char.IsDigit).ToArray());
+
+            // Ограничиваем длину 6 цифрами
+            if (digitsOnly.Length > 6)
+            {
+                textBox.Text = digitsOnly.Substring(0, 6);
+                textBox.CaretIndex = textBox.Text.Length; // Перемещаем курсор в конец
+            }
+            else
+            {
+                textBox.Text = digitsOnly;
+            }
+        }
+
+        private void SeriesAndNumberTb_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            if (textBox == null) return;
+
+            // Разрешаем ввод только цифр
+            if (!char.IsDigit(e.Text, e.Text.Length - 1))
+            {
+                e.Handled = true; // Отменяем ввод
+            }
+        }
     }
 }

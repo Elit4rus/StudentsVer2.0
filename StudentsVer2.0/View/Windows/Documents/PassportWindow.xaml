@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StudentsVer2._0.View.Windows.Documents"
         mc:Ignorable="d"
-        Title="PassportWindow" SizeToContent="Height" Width="600" WindowStyle="None" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
-    <Border CornerRadius="10" BorderThickness="1" BorderBrush="Black">
+        Title="PassportWindow" Height="672" Width="600" WindowStyle="None" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Border CornerRadius="10" BorderThickness="2" BorderBrush="Black">
         <Grid Margin="20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
-                <RowDefinition Height="0.2*"/>
+                <RowDefinition Height="0.1*"/>
             </Grid.RowDefinitions>
 
             <Grid>

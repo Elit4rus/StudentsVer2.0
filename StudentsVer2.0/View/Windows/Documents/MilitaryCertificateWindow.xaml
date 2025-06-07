@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StudentsVer2._0.View.Windows.Documents"
         mc:Ignorable="d"
-        Title="MilitaryCertificateWindow" Width="600" SizeToContent="Height" ResizeMode="NoResize" WindowStyle="None"  WindowStartupLocation="CenterScreen">
-    <Border CornerRadius="10" BorderThickness="1" BorderBrush="Black">
+        Title="MilitaryCertificateWindow" Width="600" Height="258"  ResizeMode="NoResize" WindowStyle="None"  WindowStartupLocation="CenterScreen">
+    <Border CornerRadius="10" BorderThickness="2" BorderBrush="Black">
         <Grid Margin="20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
-                <RowDefinition Height="0.2*"/>
+                <RowDefinition Height="0.3*"/>
             </Grid.RowDefinitions>
             <Grid>
                 <Grid.RowDefinitions>
@@ -26,7 +26,7 @@
 
                 <TextBlock Text="Номер удостоверения" FontSize="20" Foreground="#565656"/>
                 <Image Grid.Row="1" Source="/Resource/Image/TextBox2.png" />
-                <TextBox x:Name="SeriesAndNumberTb" Grid.Row="1" FontSize="20" Margin="10 0 10 0" Foreground="Black" />
+                <TextBox x:Name="SeriesAndNumberTb" Grid.Row="1" FontSize="20" Margin="10 0 10 0" Foreground="Black" TextChanged="SeriesAndNumberTb_TextChanged" PreviewTextInput="SeriesAndNumberTb_PreviewTextInput"/>
 
                 <TextBlock Text="Дата принятия на воинский учёт" Grid.Row="3" FontSize="20" Foreground="#565656"/>
                 <Image Grid.Row="4" Source="/Resource/Image/TextBox2.png" />

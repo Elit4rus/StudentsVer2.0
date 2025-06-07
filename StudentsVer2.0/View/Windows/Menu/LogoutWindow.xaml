@@ -5,8 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StudentsVer2._0.View.Windows.Menu"
         mc:Ignorable="d"
-        Title="LogoutWindow" Height="170" Width="250" ResizeMode="NoResize" WindowStyle="None"
-        AllowsTransparency="True" Background="Transparent">
+        Title="LogoutWindow" 
+        Height="170" 
+        Width="250" 
+        ResizeMode="NoResize" 
+        WindowStyle="None" 
+        Background="Transparent"
+        AllowsTransparency="True">
+
     <Window.Resources>
         <Style x:Key="ButtonClose" TargetType="Button">
             <Setter Property="OverridesDefaultStyle" Value="True"/>
@@ -39,6 +45,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
         <Style x:Key="XmarkButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -58,7 +65,6 @@
                             <ControlTemplate TargetType="Button">
                                 <Grid Background="{TemplateBinding Background}">
                                     <Image Source="/Resource/Icons/RedCirkle40px.png" />
-
                                 </Grid>
                             </ControlTemplate>
                         </Setter.Value>
@@ -74,58 +80,84 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        
-    </Window.Resources>
-    <Border CornerRadius="10" Background="White" BorderThickness="1" BorderBrush="Gray">
-        <Border.Effect>
-            <DropShadowEffect ShadowDepth="0" BlurRadius="10" Color="Black" Opacity="0.5"/>
-        </Border.Effect>
-        <Grid>
-            <TextBlock Text="Выйти из аккаунта?" 
-               HorizontalAlignment="Center" 
-               VerticalAlignment="Top" 
-               Margin="0,50,0,0" 
-               FontSize="19"
-               FontWeight="DemiBold"/>
-            <Button Name="LogoutBtn" 
-            Content="Выйти" 
-            Width="120" 
-            Height="40" 
-            HorizontalAlignment="Center" 
-            VerticalAlignment="Bottom" 
-            Margin="0,0,0,20"
-            FontSize="18"
-            Click="LogoutBtn_Click">
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="Background" Value="Black"/>
-                        <Setter Property="Foreground" Value="White"/>
-                        <Setter Property="FontFamily" Value="Roboto"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}"
-                                            CornerRadius="5"
-                                            BorderThickness="1"
-                                            BorderBrush="Black">
-                                        <ContentPresenter Margin="0 2 0 0" HorizontalAlignment="Center" VerticalAlignment="Center"></ContentPresenter>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="White"/>
-                                <Setter Property="Foreground" Value="#5367D3"/>
-                                <Setter Property="FontWeight" Value="Medium"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
 
-            <Button Grid.Column="3" Width="28" Height="28" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0 5 5 0"  Name="CloseBtn" Style="{StaticResource XmarkButton}" Click="CloseBtn_Click"/>
+        <!-- Улучшенный стиль для кнопки выхода -->
+        <Style x:Key="LogoutButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Black"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontFamily" Value="Roboto"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="5"
+                                BorderThickness="1"
+                                BorderBrush="Black">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"
+                                              Margin="0,2,0,0"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Foreground" Value="#5367D3"/>
+                    <Setter Property="BorderBrush" Value="#5367D3"/>
+                    <Setter Property="FontWeight" Value="Medium"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <!-- Основной контейнер с закруглением и тенью -->
+    <Border CornerRadius="10" 
+            Background="White"
+            BorderThickness="1" 
+            BorderBrush="Gray">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Панель заголовка с кнопкой закрытия -->
+            <Grid Grid.Row="0" Margin="0,5,5,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="1"
+                        Width="28" 
+                        Height="28" 
+                        Name="CloseBtn" 
+                        Style="{StaticResource XmarkButton}" 
+                        Click="CloseBtn_Click"/>
+            </Grid>
+
+            <!-- Основной контент -->
+            <TextBlock Grid.Row="1"
+                       Text="Выйти из аккаунта?" 
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center" 
+                       FontSize="19"
+                       FontWeight="DemiBold"/>
+
+            <!-- Кнопка выхода -->
+            <Button Grid.Row="2"
+                    Name="LogoutBtn" 
+                    Content="Выйти" 
+                    Style="{StaticResource LogoutButtonStyle}"
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Bottom" 
+                    Margin="0,0,0,20"
+                    Click="LogoutBtn_Click"/>
         </Grid>
     </Border>
-    
 </Window>

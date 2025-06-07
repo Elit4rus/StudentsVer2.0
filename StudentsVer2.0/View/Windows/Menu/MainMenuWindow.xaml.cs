@@ -122,8 +122,8 @@ namespace StudentsVer2._0.View.Windows.Menu
         private void PerformLogout()
         {
             LoginWindow loginWindow = new LoginWindow();
-            loginWindow.Show();
             Close();
+            loginWindow.Show();
         }
 
         private void ImportBtn_Click(object sender, RoutedEventArgs e)

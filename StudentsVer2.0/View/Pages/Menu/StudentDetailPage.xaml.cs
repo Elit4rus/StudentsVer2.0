@@ -27,15 +27,8 @@ namespace StudentsVer2._0.View.Pages.Menu
             PatronymicTbl.Text = student.Patronymic ?? "Нет данных"; // Если отчество отсутствует
             GroupTbl.Text = groupTitle;
 
-            if (SelectedStudentHelper.selectedStudent.PassportID != null)
-            {
-                UpdatePassportIcon();
-            }
-
-            if (SelectedStudentHelper.selectedStudent.MilitaryCertificateID != null)
-            {
-                UpdateMilitaryCertificateIcon();
-            }
+            if (SelectedStudentHelper.selectedStudent.PassportID != null) UpdatePassportIcon();
+            if (SelectedStudentHelper.selectedStudent.MilitaryCertificateID != null) UpdateMilitaryCertificateIcon();
 
             if (SelectedStudentHelper.selectedStudent.GenderID == 2)
             {
@@ -86,7 +79,7 @@ namespace StudentsVer2._0.View.Pages.Menu
                 // Или оставляем стандартную, если нет
                 border.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5367D3"));
                 image.Source = new BitmapImage(new Uri("/Resource/Icons/Group 17.png", UriKind.Relative));
-                textBlock.Text = "Заполнить паспорт";
+                textBlock.Text = "Заполнить приписное св-во";
                 textBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5367D3"));
             }
         }
