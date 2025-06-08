@@ -5,12 +5,12 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="8469d57d9e3e4d8c977fbf8b8fd72c66" Name="Diagram1">
-        <EntityTypeShape EntityType="StudentsDBModel.Gender" Width="1.5" PointX="0.75" PointY="15" />
+        <EntityTypeShape EntityType="StudentsDBModel.Gender" Width="1.5" PointX="0.75" PointY="19" />
         <EntityTypeShape EntityType="StudentsDBModel.Group" Width="1.5" PointX="0.75" PointY="3.875" />
-        <EntityTypeShape EntityType="StudentsDBModel.INN" Width="1.5" PointX="0.75" PointY="7.375" />
-        <EntityTypeShape EntityType="StudentsDBModel.InsuranceNumber" Width="1.5" PointX="0.75" PointY="12.375" />
-        <EntityTypeShape EntityType="StudentsDBModel.MilitaryCertificate" Width="1.5" PointX="0.75" PointY="9.875" />
-        <EntityTypeShape EntityType="StudentsDBModel.Passport" Width="1.5" PointX="0.75" PointY="17.25" />
+        <EntityTypeShape EntityType="StudentsDBModel.INN" Width="1.5" PointX="0.75" PointY="14" />
+        <EntityTypeShape EntityType="StudentsDBModel.InsuranceNumber" Width="1.5" PointX="0.75" PointY="11.375" />
+        <EntityTypeShape EntityType="StudentsDBModel.MilitaryCertificate" Width="1.5" PointX="0.75" PointY="16.5" />
+        <EntityTypeShape EntityType="StudentsDBModel.Passport" Width="1.5" PointX="0.75" PointY="8.125" />
         <EntityTypeShape EntityType="StudentsDBModel.Role" Width="1.5" PointX="1.5" PointY="22" />
         <EntityTypeShape EntityType="StudentsDBModel.Student" Width="1.5" PointX="3" PointY="2.5" />
         <EntityTypeShape EntityType="StudentsDBModel.User" Width="1.5" PointX="3.75" PointY="21.375" />

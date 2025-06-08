@@ -93,7 +93,8 @@
                 <Border Grid.Row="2" VerticalAlignment="Bottom" CornerRadius="1" Margin="30 0" Background="#5367D3" Height="2" Width="155" HorizontalAlignment="Left"/>
                 <Border Grid.Row="5" VerticalAlignment="Bottom" CornerRadius="1" Margin="30 0" Background="Black" Height="2"/>
                 <StackPanel Grid.Row="4" Orientation="Horizontal">
-                    <Border x:Name="PassportBorder" CornerRadius="3" Grid.Row="4" Margin="30 0" Width="201" HorizontalAlignment="Left" Height="170">
+                    
+                    <Border x:Name="PassportBorder" CornerRadius="3" Margin="30 0" Width="201" HorizontalAlignment="Left" Height="170">
                         <Border.Style>
                             <Style TargetType="Border">
                                 <!-- Установка начального стиля -->
@@ -133,7 +134,7 @@
                         </Grid>
                     </Border>
 
-                    <Border x:Name="MilitaryCertificateBorder" CornerRadius="3" Grid.Row="4" Margin="30 0" Width="201" HorizontalAlignment="Left" Height="170">
+                    <Border x:Name="MilitaryCertificateBorder" CornerRadius="3" Margin="30 0" Width="201" HorizontalAlignment="Left" Height="170">
                         <Border.Style>
                             <Style TargetType="Border">
                                 <!-- Установка начального стиля -->
@@ -173,10 +174,12 @@
                         </Grid>
                     </Border>
 
-                    <Border x:Name="INNBorder" CornerRadius="3" Grid.Row="4" Margin="30 0" Width="201" HorizontalAlignment="Left" Height="170">
+                    <Border x:Name="INNBorder" CornerRadius="3" Margin="30 0" Width="201" HorizontalAlignment="Left" Height="170">
                         <Border.Style>
                             <Style TargetType="Border">
-                                <Setter Property="Background">
+                                <!-- Установка начального стиля -->
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderBrush">
                                     <Setter.Value>
                                         <VisualBrush>
                                             <VisualBrush.Visual>
@@ -185,15 +188,13 @@
                                         </VisualBrush>
                                     </Setter.Value>
                                 </Setter>
+                                <Setter Property="BorderThickness" Value="2"/>
+                                <!-- Изменение стиля при наведении -->
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background">
+                                        <Setter Property="BorderBrush">
                                             <Setter.Value>
-                                                <VisualBrush>
-                                                    <VisualBrush.Visual>
-                                                        <Rectangle Stroke="#5367D3" StrokeThickness="2" Width="100" Height="100" RadiusX="2" RadiusY="2"/>
-                                                    </VisualBrush.Visual>
-                                                </VisualBrush>
+                                                <SolidColorBrush Color="#5367D3"/>
                                             </Setter.Value>
                                         </Setter>
                                     </Trigger>
@@ -208,8 +209,8 @@
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="1*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="3" Foreground="#5367D3" FontSize="17" Text="Заполнить ИНН" Margin="30 0" TextWrapping="Wrap" TextAlignment="Center"/>
-                            <Image Source="/Resource/Icons/Group 17.png" Grid.Row="1"/>
+                            <Image x:Name="INNIconImg" Source="/Resource/Icons/Group 17.png" Grid.Row="1"/>
+                            <TextBlock x:Name="INNTbl" Grid.Row="3" Foreground="#5367D3" FontSize="17" Text="Заполнить ИНН" Margin="30 0" TextWrapping="Wrap" TextAlignment="Center"/>
                         </Grid>
                     </Border>
 

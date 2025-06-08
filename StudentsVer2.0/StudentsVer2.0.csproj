@@ -177,6 +177,9 @@
     <Compile Include="View\Pages\Menu\StudentDetailPage.xaml.cs">
       <DependentUpon>StudentDetailPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Windows\Documents\INNWindow.xaml.cs">
+      <DependentUpon>INNWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Windows\Documents\MilitaryCertificateWindow.xaml.cs">
       <DependentUpon>MilitaryCertificateWindow.xaml</DependentUpon>
     </Compile>
@@ -247,6 +250,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Pages\Menu\StudentDetailPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Windows\Documents\INNWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

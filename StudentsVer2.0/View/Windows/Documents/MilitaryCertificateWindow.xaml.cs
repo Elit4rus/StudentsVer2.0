@@ -18,10 +18,10 @@ namespace StudentsVer2._0.View.Windows.Documents
         {
             InitializeComponent();
 
-            // Проверяем, есть ли у студента паспорт
+            // Проверяем, есть ли у студента приписное св-во
             if (SelectedStudentHelper.selectedStudent.MilitaryCertificateID != null)
             {
-                // Загружаем существующий паспорт
+                // Загружаем существующее приписное св-во
                 newMilitaryCertificate = App.context.MilitaryCertificate.Find(SelectedStudentHelper.selectedStudent.MilitaryCertificateID);
                 if (newMilitaryCertificate != null)
                 {
@@ -64,7 +64,7 @@ namespace StudentsVer2._0.View.Windows.Documents
                     return;
                 }
 
-                // Если паспорт уже существует, обновляем его
+                // Если приписное св-во уже существует, обновляем его
                 if (SelectedStudentHelper.selectedStudent.MilitaryCertificateID != null)
                 {
                     var existingMilitaryCertificate = App.context.MilitaryCertificate.Find(SelectedStudentHelper.selectedStudent.MilitaryCertificateID);
@@ -80,7 +80,7 @@ namespace StudentsVer2._0.View.Windows.Documents
                 }
                 else
                 {
-                    //Если паспорта не было, добавляем новый
+                    //Если приписного св-ва не было, добавляем новый
                     newMilitaryCertificate = new MilitaryCertificate()
                     {
                         SeriesAndNumber = SeriesAndNumberTb.Text,
@@ -107,7 +107,6 @@ namespace StudentsVer2._0.View.Windows.Documents
         {
             Close();
         }
-
         private void DateRegistrationTb_TextChanged(object sender, TextChangedEventArgs e)
         {
             var textBox = sender as TextBox;
@@ -147,7 +146,6 @@ namespace StudentsVer2._0.View.Windows.Documents
             // Перемещаем курсор в конец текста
             textBox.CaretIndex = textBox.Text.Length;
         }
-
         private void DateRegistrationTb_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             var textBox = sender as TextBox;
@@ -173,7 +171,6 @@ namespace StudentsVer2._0.View.Windows.Documents
                 return result;
             return null;
         }
-
         private void SeriesAndNumberTb_TextChanged(object sender, TextChangedEventArgs e)
         {
             var textBox = sender as TextBox;
@@ -195,7 +192,6 @@ namespace StudentsVer2._0.View.Windows.Documents
                 textBox.Text = digitsOnly;
             }
         }
-
         private void SeriesAndNumberTb_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             var textBox = sender as TextBox;

@@ -23,7 +23,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Number" Type="nvarchar" MaxLength="30" Nullable="false" />
           <Property Name="DateIssue" Type="date" Nullable="false" />
         </EntityType>
@@ -32,8 +32,8 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" Nullable="false" />
-          <Property Name="Number" Type="nvarchar" MaxLength="30" />
-          <Property Name="DateRegistration" Type="date" />
+          <Property Name="Number" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="DateRegistration" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="MilitaryCertificate">
           <Key>
@@ -332,7 +332,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Number" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
           <Property Name="DateIssue" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="Student" Relationship="StudentsDBModel.FK_Student_INN" FromRole="INN" ToRole="Student" />
@@ -342,8 +342,8 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Number" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="DateRegistration" Type="DateTime" Precision="0" />
+          <Property Name="Number" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="DateRegistration" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="Student" Relationship="StudentsDBModel.FK_Student_InsuranceNumber" FromRole="InsuranceNumber" ToRole="Student" />
         </EntityType>
         <EntityType Name="MilitaryCertificate">

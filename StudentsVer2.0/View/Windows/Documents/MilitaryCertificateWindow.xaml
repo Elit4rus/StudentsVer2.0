@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StudentsVer2._0.View.Windows.Documents"
         mc:Ignorable="d"
-        Title="MilitaryCertificateWindow" Width="600" Height="258"  ResizeMode="NoResize" WindowStyle="None"  WindowStartupLocation="CenterScreen">
+        Title="Окно заполнения данных приписного св-ва" Width="600" Height="258"  ResizeMode="NoResize" WindowStyle="None"  WindowStartupLocation="CenterScreen">
     <Border CornerRadius="10" BorderThickness="2" BorderBrush="Black">
         <Grid Margin="20">
             <Grid.RowDefinitions>
