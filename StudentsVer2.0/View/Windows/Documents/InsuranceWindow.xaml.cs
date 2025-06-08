@@ -9,34 +9,33 @@ using System.Windows.Input;
 namespace StudentsVer2._0.View.Windows.Documents
 {
     /// <summary>
-    /// Логика взаимодействия для INNWindow.xaml
+    /// Логика взаимодействия для InsuranceWindow.xaml
     /// </summary>
-    public partial class INNWindow : Window
+    public partial class InsuranceWindow : Window
     {
-        public static INN newINN;
-        public INNWindow()
+        public static InsuranceNumber newInsurance;
+        public InsuranceWindow()
         {
             InitializeComponent();
 
-            // Проверяем, есть ли у студента ИНН
-            if (SelectedStudentHelper.selectedStudent.INNID != null)
+            // Проверяем, есть ли у студента СНИЛС
+            if (SelectedStudentHelper.selectedStudent.InsuranceNumberID != null)
             {
-                // Загружаем существующий ИНН
-                newINN = App.context.INN.Find(SelectedStudentHelper.selectedStudent.INNID);
-                if (newINN != null)
+                // Загружаем существующий СНИЛС
+                newInsurance = App.context.InsuranceNumber.Find(SelectedStudentHelper.selectedStudent.InsuranceNumberID);
+                if (newInsurance != null)
                 {
                     // Заполняем поля данными
-                    NumberTb.Text = newINN.Number;
-                    DateRegistrationTb.Text = newINN.DateIssue.ToString("dd.MM.yyyy") ?? "";
+                    NumberTb.Text = newInsurance.Number;
+                    DateRegistrationTb.Text = newInsurance.DateRegistration.ToString("dd.MM.yyyy") ?? "";
                 }
             }
             else
             {
                 // Создаем новый объект для будущего сохранения
-                newINN = new INN();
+                newInsurance = new InsuranceNumber();
             }
         }
-
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -44,17 +43,17 @@ namespace StudentsVer2._0.View.Windows.Documents
                 // Проверка, все ли поля пустые
                 if (string.IsNullOrEmpty(NumberTb.Text) && string.IsNullOrEmpty(DateRegistrationTb.Text))
                 {
-                    // Если все поля пустые и ИНН существовал, удаляем его
-                    if (SelectedStudentHelper.selectedStudent.INNID != null)
+                    // Если все поля пустые и СНИЛС существовал, удаляем его
+                    if (SelectedStudentHelper.selectedStudent.InsuranceNumberID != null)
                     {
-                        var INNToDelete = App.context.INN.Find(SelectedStudentHelper.selectedStudent.INNID);
-                        if (INNToDelete != null)
+                        var InsuranceToDelete = App.context.InsuranceNumber.Find(SelectedStudentHelper.selectedStudent.InsuranceNumberID);
+                        if (InsuranceToDelete != null)
                         {
-                            App.context.INN.Remove(INNToDelete);
-                            SelectedStudentHelper.selectedStudent.INNID = null;
-                            App.context.SaveChanges();
-                            MessageBox.Show("ИНН удален!", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
                             DialogResult = true;
+                            App.context.InsuranceNumber.Remove(InsuranceToDelete);
+                            SelectedStudentHelper.selectedStudent.InsuranceNumberID = null;
+                            App.context.SaveChanges();
+                            MessageBox.Show("СНИЛС удален!", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
                         }
                     }
                     else
@@ -64,36 +63,36 @@ namespace StudentsVer2._0.View.Windows.Documents
                     return;
                 }
 
-                // Если ИНН уже существует, обновляем его
-                if (SelectedStudentHelper.selectedStudent.INNID != null)
+                // Если СНИЛС уже существует, обновляем его
+                if (SelectedStudentHelper.selectedStudent.InsuranceNumberID != null)
                 {
-                    var existingINN = App.context.INN.Find(SelectedStudentHelper.selectedStudent.INNID);
-                    if (existingINN != null)
+                    var existingInsurance = App.context.InsuranceNumber.Find(SelectedStudentHelper.selectedStudent.InsuranceNumberID);
+                    if (existingInsurance != null)
                     {
-                        existingINN.Number = NumberTb.Text;
-                        existingINN.DateIssue = (DateTime)ParseDate(DateRegistrationTb.Text);
+                        existingInsurance.Number = NumberTb.Text;
+                        existingInsurance.DateRegistration = (DateTime)ParseDate(DateRegistrationTb.Text);
 
                         App.context.SaveChanges();
-                        MessageBox.Show("Данные ИНН обновлены!", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+                        MessageBox.Show("Данные СНИЛС обновлены!", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
                         DialogResult = true;
                     }
                 }
                 else
                 {
-                    //Если ИНН не было, добавляем новый
-                    newINN = new INN()
+                    //Если СНИЛС не было, добавляем новый
+                    newInsurance = new InsuranceNumber()
                     {
                         Number = NumberTb.Text,
-                        DateIssue = (DateTime)ParseDate(DateRegistrationTb.Text)
+                        DateRegistration = (DateTime)ParseDate(DateRegistrationTb.Text)
                     };
 
-                    App.context.INN.Add(newINN);
+                    App.context.InsuranceNumber.Add(newInsurance);
                     App.context.SaveChanges();
 
-                    SelectedStudentHelper.selectedStudent.INNID = newINN.ID;
+                    SelectedStudentHelper.selectedStudent.InsuranceNumberID = newInsurance.ID;
                     App.context.SaveChanges();
 
-                    MessageBox.Show("Данные ИНН добавлены!", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("Данные СНИЛС добавлены!", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
                     DialogResult = true;
                 }
             }
@@ -109,19 +108,29 @@ namespace StudentsVer2._0.View.Windows.Documents
 
             string text = textBox.Text;
 
-            // Удаляем все нецифровые символы (на случай, если пользователь вставил текст)
+            // Удаляем все нецифровые символы
             string digitsOnly = new string(text.Where(char.IsDigit).ToArray());
 
-            // Ограничиваем длину 12 цифрами
-            if (digitsOnly.Length > 12)
+            // Форматируем текст
+            if (digitsOnly.Length > 9)
             {
-                textBox.Text = digitsOnly.Substring(0, 12);
-                textBox.CaretIndex = textBox.Text.Length; // Перемещаем курсор в конец
+                textBox.Text = $"{digitsOnly.Substring(0, 3)}-{digitsOnly.Substring(3, 3)}-{digitsOnly.Substring(6, 3)} {digitsOnly.Substring(9)}";
+            }
+            else if (digitsOnly.Length > 6)
+            {
+                textBox.Text = $"{digitsOnly.Substring(0, 3)}-{digitsOnly.Substring(3, 3)}-{digitsOnly.Substring(6)}";
+            }
+            else if (digitsOnly.Length > 3)
+            {
+                textBox.Text = $"{digitsOnly.Substring(0, 3)}-{digitsOnly.Substring(3)}";
             }
             else
             {
                 textBox.Text = digitsOnly;
             }
+
+            // Перемещаем курсор в конец текста
+            textBox.CaretIndex = textBox.Text.Length;
         }
         private void NumberTb_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
@@ -130,6 +139,12 @@ namespace StudentsVer2._0.View.Windows.Documents
 
             // Разрешаем ввод только цифр
             if (!char.IsDigit(e.Text, e.Text.Length - 1))
+            {
+                e.Handled = true; // Отменяем ввод
+            }
+
+            // Проверяем, чтобы длина не превышала 14 символов (например, "123-456-789 10")
+            if (textBox.Text.Length >= 14)
             {
                 e.Handled = true; // Отменяем ввод
             }

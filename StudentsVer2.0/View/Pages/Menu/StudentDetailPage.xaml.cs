@@ -22,6 +22,7 @@ namespace StudentsVer2._0.View.Pages.Menu
             PassportBorder.MouseLeftButtonDown += PassportClick;
             MilitaryCertificateBorder.MouseLeftButtonDown += MilitaryCertificateClick;
             INNBorder.MouseLeftButtonDown += INNClick;
+            InsuranceBorder.MouseLeftButtonDown += InsuranceClick;
 
             SurnameTbl.Text = student.Surname;
             NameTbl.Text = student.Name;
@@ -31,6 +32,7 @@ namespace StudentsVer2._0.View.Pages.Menu
             if (SelectedStudentHelper.selectedStudent.PassportID != null) UpdatePassportIcon();
             if (SelectedStudentHelper.selectedStudent.MilitaryCertificateID != null) UpdateMilitaryCertificateIcon();
             if (SelectedStudentHelper.selectedStudent.INNID != null) UpdateINNIcon();
+            if (SelectedStudentHelper.selectedStudent.InsuranceNumberID != null) UpdateInsuranceIcon();
 
             if (SelectedStudentHelper.selectedStudent.GenderID == 2)
             {
@@ -70,7 +72,7 @@ namespace StudentsVer2._0.View.Pages.Menu
 
             if (SelectedStudentHelper.selectedStudent.MilitaryCertificateID != null)
             {
-                // Меняем на серую иконку, если паспорт есть
+                // Меняем на серую иконку, если приписное св-во есть
                 border.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#6C6C6C"));
                 image.Source = new BitmapImage(new Uri("/Resource/Image/check.png", UriKind.Relative));
                 textBlock.Text = "Приписное св-во заполнено";
@@ -94,7 +96,7 @@ namespace StudentsVer2._0.View.Pages.Menu
 
             if (SelectedStudentHelper.selectedStudent.INNID != null)
             {
-                // Меняем на серую иконку, если паспорт есть
+                // Меняем на серую иконку, если ИНН есть
                 border.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#6C6C6C"));
                 image.Source = new BitmapImage(new Uri("/Resource/Image/check.png", UriKind.Relative));
                 textBlock.Text = "ИНН заполнен";
@@ -110,37 +112,64 @@ namespace StudentsVer2._0.View.Pages.Menu
             }
         }
 
+        private void UpdateInsuranceIcon()
+        {
+            var border = InsuranceBorder;
+            var image = InsuranceIconImg;
+            var textBlock = InsuranceTbl;
+
+            if (SelectedStudentHelper.selectedStudent.InsuranceNumberID != null)
+            {
+                // Меняем на серую иконку, если СНИЛС есть
+                border.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#6C6C6C"));
+                image.Source = new BitmapImage(new Uri("/Resource/Image/check.png", UriKind.Relative));
+                textBlock.Text = "СНИЛС заполнен";
+                textBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#6C6C6C"));
+            }
+            else
+            {
+                // Или оставляем стандартную, если нет
+                border.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5367D3"));
+                image.Source = new BitmapImage(new Uri("/Resource/Icons/Group 17.png", UriKind.Relative));
+                textBlock.Text = "Заполнить СНИЛС";
+                textBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#5367D3"));
+            }
+        }
+
         private void PassportClick(object sender, MouseButtonEventArgs e)
         {
 
             PassportWindow passportWindow = new PassportWindow();
             if (passportWindow.ShowDialog() == true)
             {
-                // Обновляем иконку после закрытия окна, если данные были сохранены
                 UpdatePassportIcon();
             }
 
         }
-
         private void MilitaryCertificateClick(object sender, MouseButtonEventArgs e)
         {
-            // Здесь откройте окно для заполнения данных военного билета
             MilitaryCertificateWindow militaryCertificateWindow = new MilitaryCertificateWindow();
             if (militaryCertificateWindow.ShowDialog() == true)
             {
-                // Обновляем иконку после закрытия окна, если данные были сохранены
                 UpdateMilitaryCertificateIcon();
             }
         }
 
         private void INNClick(object sender, MouseButtonEventArgs e)
         {
-            // Здесь откройте окно для заполнения данных ИНН
             INNWindow INNWindow = new INNWindow();
             if (INNWindow.ShowDialog() == true)
             {
-                // Обновляем иконку после закрытия окна, если данные были сохранены
                 UpdateINNIcon();
+            }
+        }
+
+        private void InsuranceClick(object sender, MouseButtonEventArgs e)
+        {
+            InsuranceWindow insuranceWindow = new InsuranceWindow();
+            if (insuranceWindow.ShowDialog() == true)
+            {
+                UpdateInsuranceIcon();
             }
         }
 
