@@ -19,6 +19,13 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="30" Nullable="false" />
         </EntityType>
+        <EntityType Name="Image">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Image" Type="varbinary(max)" Nullable="false" />
+        </EntityType>
         <EntityType Name="INN">
           <Key>
             <PropertyRef Name="ID" />
@@ -78,6 +85,14 @@
           <Property Name="MilitaryCertificateID" Type="int" />
           <Property Name="INNID" Type="int" />
           <Property Name="InsuranceNumberID" Type="int" />
+        </EntityType>
+        <EntityType Name="StudentImage">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ImageID" Type="int" Nullable="false" />
+          <Property Name="StudentID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -173,6 +188,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_StudentImage_Image">
+          <End Role="Image" Type="Self.Image" Multiplicity="1" />
+          <End Role="StudentImage" Type="Self.StudentImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Image">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="StudentImage">
+              <PropertyRef Name="ImageID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentImage_Student">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="StudentImage" Type="Self.StudentImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="StudentImage">
+              <PropertyRef Name="StudentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_User_Role">
           <End Role="Role" Type="Self.Role" Multiplicity="1" />
           <End Role="User" Type="Self.User" Multiplicity="*" />
@@ -214,12 +253,14 @@
         <EntityContainer Name="Хранилище StudentsDBModelContainer">
           <EntitySet Name="Gender" EntityType="Self.Gender" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Group" EntityType="Self.Group" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Image" EntityType="Self.Image" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="INN" EntityType="Self.INN" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InsuranceNumber" EntityType="Self.InsuranceNumber" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MilitaryCertificate" EntityType="Self.MilitaryCertificate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Passport" EntityType="Self.Passport" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StudentImage" EntityType="Self.StudentImage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserGroup" EntityType="Self.UserGroup" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Student_Gender" Association="Self.FK_Student_Gender">
@@ -246,6 +287,14 @@
             <End Role="Passport" EntitySet="Passport" />
             <End Role="Student" EntitySet="Student" />
           </AssociationSet>
+          <AssociationSet Name="FK_StudentImage_Image" Association="Self.FK_StudentImage_Image">
+            <End Role="Image" EntitySet="Image" />
+            <End Role="StudentImage" EntitySet="StudentImage" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentImage_Student" Association="Self.FK_StudentImage_Student">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="StudentImage" EntitySet="StudentImage" />
+          </AssociationSet>
           <AssociationSet Name="FK_User_Role" Association="Self.FK_User_Role">
             <End Role="Role" EntitySet="Role" />
             <End Role="User" EntitySet="User" />
@@ -266,12 +315,14 @@
         <EntityContainer Name="StudentEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Gender" EntityType="StudentsDBModel.Gender" />
           <EntitySet Name="Group" EntityType="StudentsDBModel.Group" />
+          <EntitySet Name="Image" EntityType="StudentsDBModel.Image" />
           <EntitySet Name="INN" EntityType="StudentsDBModel.INN" />
           <EntitySet Name="InsuranceNumber" EntityType="StudentsDBModel.InsuranceNumber" />
           <EntitySet Name="MilitaryCertificate" EntityType="StudentsDBModel.MilitaryCertificate" />
           <EntitySet Name="Passport" EntityType="StudentsDBModel.Passport" />
           <EntitySet Name="Role" EntityType="StudentsDBModel.Role" />
           <EntitySet Name="Student" EntityType="StudentsDBModel.Student" />
+          <EntitySet Name="StudentImage" EntityType="StudentsDBModel.StudentImage" />
           <EntitySet Name="User" EntityType="StudentsDBModel.User" />
           <EntitySet Name="UserGroup" EntityType="StudentsDBModel.UserGroup" />
           <AssociationSet Name="FK_Student_Gender" Association="StudentsDBModel.FK_Student_Gender">
@@ -285,6 +336,10 @@
           <AssociationSet Name="FK_UserGroup_Group" Association="StudentsDBModel.FK_UserGroup_Group">
             <End Role="Group" EntitySet="Group" />
             <End Role="UserGroup" EntitySet="UserGroup" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentImage_Image" Association="StudentsDBModel.FK_StudentImage_Image">
+            <End Role="Image" EntitySet="Image" />
+            <End Role="StudentImage" EntitySet="StudentImage" />
           </AssociationSet>
           <AssociationSet Name="FK_Student_INN" Association="StudentsDBModel.FK_Student_INN">
             <End Role="INN" EntitySet="INN" />
@@ -305,6 +360,10 @@
           <AssociationSet Name="FK_User_Role" Association="StudentsDBModel.FK_User_Role">
             <End Role="Role" EntitySet="Role" />
             <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentImage_Student" Association="StudentsDBModel.FK_StudentImage_Student">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="StudentImage" EntitySet="StudentImage" />
           </AssociationSet>
           <AssociationSet Name="FK_UserGroup_User" Association="StudentsDBModel.FK_UserGroup_User">
             <End Role="User" EntitySet="User" />
@@ -327,6 +386,14 @@
           <Property Name="Title" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Student" Relationship="StudentsDBModel.FK_Student_Group" FromRole="Group" ToRole="Student" />
           <NavigationProperty Name="UserGroup" Relationship="StudentsDBModel.FK_UserGroup_Group" FromRole="Group" ToRole="UserGroup" />
+        </EntityType>
+        <EntityType Name="Image">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Image1" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="StudentImage" Relationship="StudentsDBModel.FK_StudentImage_Image" FromRole="Image" ToRole="StudentImage" />
         </EntityType>
         <EntityType Name="INN">
           <Key>
@@ -398,6 +465,17 @@
           <NavigationProperty Name="InsuranceNumber" Relationship="StudentsDBModel.FK_Student_InsuranceNumber" FromRole="Student" ToRole="InsuranceNumber" />
           <NavigationProperty Name="MilitaryCertificate" Relationship="StudentsDBModel.FK_Student_MilitaryCertificate" FromRole="Student" ToRole="MilitaryCertificate" />
           <NavigationProperty Name="Passport" Relationship="StudentsDBModel.FK_Student_Passport1" FromRole="Student" ToRole="Passport" />
+          <NavigationProperty Name="StudentImage" Relationship="StudentsDBModel.FK_StudentImage_Student" FromRole="Student" ToRole="StudentImage" />
+        </EntityType>
+        <EntityType Name="StudentImage">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ImageID" Type="Int32" Nullable="false" />
+          <Property Name="StudentID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Image" Relationship="StudentsDBModel.FK_StudentImage_Image" FromRole="StudentImage" ToRole="Image" />
+          <NavigationProperty Name="Student" Relationship="StudentsDBModel.FK_StudentImage_Student" FromRole="StudentImage" ToRole="Student" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -463,6 +541,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_StudentImage_Image">
+          <End Type="StudentsDBModel.Image" Role="Image" Multiplicity="1" />
+          <End Type="StudentsDBModel.StudentImage" Role="StudentImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Image">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="StudentImage">
+              <PropertyRef Name="ImageID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Student_INN">
           <End Type="StudentsDBModel.INN" Role="INN" Multiplicity="0..1" />
           <End Type="StudentsDBModel.Student" Role="Student" Multiplicity="*" />
@@ -523,6 +613,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_StudentImage_Student">
+          <End Type="StudentsDBModel.Student" Role="Student" Multiplicity="1" />
+          <End Type="StudentsDBModel.StudentImage" Role="StudentImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="StudentImage">
+              <PropertyRef Name="StudentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserGroup_User">
           <End Type="StudentsDBModel.User" Role="User" Multiplicity="0..1" />
           <End Type="StudentsDBModel.UserGroup" Role="UserGroup" Multiplicity="*" />
@@ -553,6 +655,14 @@
             <EntityTypeMapping TypeName="StudentsDBModel.Group">
               <MappingFragment StoreEntitySet="Group">
                 <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Image">
+            <EntityTypeMapping TypeName="StudentsDBModel.Image">
+              <MappingFragment StoreEntitySet="Image">
+                <ScalarProperty Name="Image1" ColumnName="Image" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -619,6 +729,15 @@
                 <ScalarProperty Name="Patronymic" ColumnName="Patronymic" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StudentImage">
+            <EntityTypeMapping TypeName="StudentsDBModel.StudentImage">
+              <MappingFragment StoreEntitySet="StudentImage">
+                <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+                <ScalarProperty Name="ImageID" ColumnName="ImageID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

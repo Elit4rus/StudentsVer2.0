@@ -27,12 +27,14 @@ namespace StudentsVer2._0.Model
     
         public virtual DbSet<Gender> Gender { get; set; }
         public virtual DbSet<Group> Group { get; set; }
+        public virtual DbSet<Image> Image { get; set; }
         public virtual DbSet<INN> INN { get; set; }
         public virtual DbSet<InsuranceNumber> InsuranceNumber { get; set; }
         public virtual DbSet<MilitaryCertificate> MilitaryCertificate { get; set; }
         public virtual DbSet<Passport> Passport { get; set; }
         public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<Student> Student { get; set; }
+        public virtual DbSet<StudentImage> StudentImage { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<UserGroup> UserGroup { get; set; }
     }

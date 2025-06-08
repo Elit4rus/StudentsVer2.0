@@ -265,6 +265,13 @@
                 </Grid.RowDefinitions>
                 <TextBlock Text="Документы" Grid.Row="1" Margin="36 0" FontSize="20"/>
                 <Border Grid.Row="2" VerticalAlignment="Bottom" CornerRadius="1" Margin="30 0" Background="#5367D3" Height="2" Width="116" HorizontalAlignment="Left"/>
+                <!-- Место для загрузки картинок -->
+                <Grid Grid.Row="3" Margin="30">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <WrapPanel x:Name="ImagesPanel" Width="1860" Height="376.4" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                    </ScrollViewer>
+                    <Button x:Name="AddBtn" Content="Добавить изображение" Click="AddBtn_Click"  HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" />
+                </Grid>
             </Grid>
         </Grid>
 

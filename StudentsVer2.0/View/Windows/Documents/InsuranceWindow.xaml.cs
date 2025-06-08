@@ -49,11 +49,11 @@ namespace StudentsVer2._0.View.Windows.Documents
                         var InsuranceToDelete = App.context.InsuranceNumber.Find(SelectedStudentHelper.selectedStudent.InsuranceNumberID);
                         if (InsuranceToDelete != null)
                         {
-                            DialogResult = true;
                             App.context.InsuranceNumber.Remove(InsuranceToDelete);
                             SelectedStudentHelper.selectedStudent.InsuranceNumberID = null;
                             App.context.SaveChanges();
                             MessageBox.Show("СНИЛС удален!", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+                            DialogResult = true;
                         }
                     }
                     else

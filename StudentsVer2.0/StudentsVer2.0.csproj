@@ -135,6 +135,9 @@
     <Compile Include="Model\Group.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\Image.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\INN.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -168,6 +171,9 @@
     <Compile Include="Model\Student.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\StudentImage.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\User.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -176,6 +182,9 @@
     </Compile>
     <Compile Include="View\Pages\Menu\StudentDetailPage.xaml.cs">
       <DependentUpon>StudentDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Windows\Documents\ImageWindow.xaml.cs">
+      <DependentUpon>ImageWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Windows\Documents\INNWindow.xaml.cs">
       <DependentUpon>INNWindow.xaml</DependentUpon>
@@ -253,6 +262,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Pages\Menu\StudentDetailPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Windows\Documents\ImageWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -12,33 +12,17 @@ namespace StudentsVer2._0.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Student
+    public partial class Image
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Student()
+        public Image()
         {
             this.StudentImage = new HashSet<StudentImage>();
         }
     
         public int ID { get; set; }
-        public string Surname { get; set; }
-        public string Name { get; set; }
-        public string Patronymic { get; set; }
-        public Nullable<int> GroupID { get; set; }
-        public Nullable<System.DateTime> BirthDay { get; set; }
-        public Nullable<int> GenderID { get; set; }
-        public Nullable<int> PassportID { get; set; }
-        public bool IsSelected { get; set; }
-        public Nullable<int> MilitaryCertificateID { get; set; }
-        public Nullable<int> INNID { get; set; }
-        public Nullable<int> InsuranceNumberID { get; set; }
+        public byte[] Image1 { get; set; }
     
-        public virtual Gender Gender { get; set; }
-        public virtual Group Group { get; set; }
-        public virtual INN INN { get; set; }
-        public virtual InsuranceNumber InsuranceNumber { get; set; }
-        public virtual MilitaryCertificate MilitaryCertificate { get; set; }
-        public virtual Passport Passport { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StudentImage> StudentImage { get; set; }
     }
