@@ -12,16 +12,16 @@ namespace StudentsVer2._0.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Image
+    public partial class ImageDocument
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Image()
+        public ImageDocument()
         {
             this.StudentImage = new HashSet<StudentImage>();
         }
     
         public int ID { get; set; }
-        public byte[] Image1 { get; set; }
+        public byte[] ImageDoc { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StudentImage> StudentImage { get; set; }

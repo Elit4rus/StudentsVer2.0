@@ -135,7 +135,7 @@
     <Compile Include="Model\Group.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Image.cs">
+    <Compile Include="Model\ImageDocument.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\INN.cs">

@@ -19,12 +19,12 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="30" Nullable="false" />
         </EntityType>
-        <EntityType Name="Image">
+        <EntityType Name="ImageDocument">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Image" Type="varbinary(max)" Nullable="false" />
+          <Property Name="ImageDoc" Type="varbinary(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="INN">
           <Key>
@@ -189,10 +189,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_StudentImage_Image">
-          <End Role="Image" Type="Self.Image" Multiplicity="1" />
+          <End Role="ImageDocument" Type="Self.ImageDocument" Multiplicity="1" />
           <End Role="StudentImage" Type="Self.StudentImage" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Image">
+            <Principal Role="ImageDocument">
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="StudentImage">
@@ -253,7 +253,7 @@
         <EntityContainer Name="Хранилище StudentsDBModelContainer">
           <EntitySet Name="Gender" EntityType="Self.Gender" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Group" EntityType="Self.Group" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Image" EntityType="Self.Image" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ImageDocument" EntityType="Self.ImageDocument" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="INN" EntityType="Self.INN" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InsuranceNumber" EntityType="Self.InsuranceNumber" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MilitaryCertificate" EntityType="Self.MilitaryCertificate" Schema="dbo" store:Type="Tables" />
@@ -288,7 +288,7 @@
             <End Role="Student" EntitySet="Student" />
           </AssociationSet>
           <AssociationSet Name="FK_StudentImage_Image" Association="Self.FK_StudentImage_Image">
-            <End Role="Image" EntitySet="Image" />
+            <End Role="ImageDocument" EntitySet="ImageDocument" />
             <End Role="StudentImage" EntitySet="StudentImage" />
           </AssociationSet>
           <AssociationSet Name="FK_StudentImage_Student" Association="Self.FK_StudentImage_Student">
@@ -315,7 +315,7 @@
         <EntityContainer Name="StudentEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Gender" EntityType="StudentsDBModel.Gender" />
           <EntitySet Name="Group" EntityType="StudentsDBModel.Group" />
-          <EntitySet Name="Image" EntityType="StudentsDBModel.Image" />
+          <EntitySet Name="ImageDocument" EntityType="StudentsDBModel.ImageDocument" />
           <EntitySet Name="INN" EntityType="StudentsDBModel.INN" />
           <EntitySet Name="InsuranceNumber" EntityType="StudentsDBModel.InsuranceNumber" />
           <EntitySet Name="MilitaryCertificate" EntityType="StudentsDBModel.MilitaryCertificate" />
@@ -338,7 +338,7 @@
             <End Role="UserGroup" EntitySet="UserGroup" />
           </AssociationSet>
           <AssociationSet Name="FK_StudentImage_Image" Association="StudentsDBModel.FK_StudentImage_Image">
-            <End Role="Image" EntitySet="Image" />
+            <End Role="ImageDocument" EntitySet="ImageDocument" />
             <End Role="StudentImage" EntitySet="StudentImage" />
           </AssociationSet>
           <AssociationSet Name="FK_Student_INN" Association="StudentsDBModel.FK_Student_INN">
@@ -387,13 +387,13 @@
           <NavigationProperty Name="Student" Relationship="StudentsDBModel.FK_Student_Group" FromRole="Group" ToRole="Student" />
           <NavigationProperty Name="UserGroup" Relationship="StudentsDBModel.FK_UserGroup_Group" FromRole="Group" ToRole="UserGroup" />
         </EntityType>
-        <EntityType Name="Image">
+        <EntityType Name="ImageDocument">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Image1" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
-          <NavigationProperty Name="StudentImage" Relationship="StudentsDBModel.FK_StudentImage_Image" FromRole="Image" ToRole="StudentImage" />
+          <Property Name="ImageDoc" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="StudentImage" Relationship="StudentsDBModel.FK_StudentImage_Image" FromRole="ImageDocument" ToRole="StudentImage" />
         </EntityType>
         <EntityType Name="INN">
           <Key>
@@ -474,7 +474,7 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ImageID" Type="Int32" Nullable="false" />
           <Property Name="StudentID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Image" Relationship="StudentsDBModel.FK_StudentImage_Image" FromRole="StudentImage" ToRole="Image" />
+          <NavigationProperty Name="ImageDocument" Relationship="StudentsDBModel.FK_StudentImage_Image" FromRole="StudentImage" ToRole="ImageDocument" />
           <NavigationProperty Name="Student" Relationship="StudentsDBModel.FK_StudentImage_Student" FromRole="StudentImage" ToRole="Student" />
         </EntityType>
         <EntityType Name="User">
@@ -542,10 +542,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_StudentImage_Image">
-          <End Type="StudentsDBModel.Image" Role="Image" Multiplicity="1" />
+          <End Type="StudentsDBModel.ImageDocument" Role="ImageDocument" Multiplicity="1" />
           <End Type="StudentsDBModel.StudentImage" Role="StudentImage" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Image">
+            <Principal Role="ImageDocument">
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="StudentImage">
@@ -659,10 +659,10 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Image">
-            <EntityTypeMapping TypeName="StudentsDBModel.Image">
-              <MappingFragment StoreEntitySet="Image">
-                <ScalarProperty Name="Image1" ColumnName="Image" />
+          <EntitySetMapping Name="ImageDocument">
+            <EntityTypeMapping TypeName="StudentsDBModel.ImageDocument">
+              <MappingFragment StoreEntitySet="ImageDocument">
+                <ScalarProperty Name="ImageDoc" ColumnName="ImageDoc" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

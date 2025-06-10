@@ -1,8 +1,8 @@
-﻿using Microsoft.Win32;
-using StudentsVer2._0.AppData;
+﻿using StudentsVer2._0.AppData;
 using StudentsVer2._0.Model;
 using StudentsVer2._0.View.Windows.Documents;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -10,7 +10,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Image = StudentsVer2._0.Model.Image;
 
 namespace StudentsVer2._0.View.Pages.Menu
 {
@@ -19,9 +18,15 @@ namespace StudentsVer2._0.View.Pages.Menu
     /// </summary>
     public partial class StudentDetailPage : Page
     {
+        private Student currentStudent;
+        private List<ImageDocument> studentImages;
         public StudentDetailPage(Student student, string groupTitle)
         {
             InitializeComponent();
+            currentStudent = student;
+
+            // Загрузка изображений при инициализации
+            LoadStudentImages();
 
             PassportBorder.MouseLeftButtonDown += PassportClick;
             MilitaryCertificateBorder.MouseLeftButtonDown += MilitaryCertificateClick;
@@ -42,224 +47,97 @@ namespace StudentsVer2._0.View.Pages.Menu
             {
                 MilitaryCertificateBorder.Visibility = Visibility.Collapsed;
             }
-            LoadImages(); // Загрузка изображений при инициализации страницы
         }
 
-        private void LoadImages()
+        private void LoadStudentImages()
         {
-            var student = SelectedStudentHelper.selectedStudent;
-            ImagesPanel.Children.Clear(); // Очищаем панель перед загрузкой изображений
-
-            // Получаем все изображения для текущего студента
-            var studentImages = App.context.StudentImage
-                .Where(si => si.StudentID == student.ID)
-                .Select(si => si.Image)
-                .ToList();
+            studentImages = App.context.StudentImage
+            .Where(si => si.StudentID == currentStudent.ID)
+            .Select(si => si.ImageDocument)
+            .ToList();
+            ImagesPanel.Children.Clear();
 
             foreach (var image in studentImages)
             {
-                AddImageToPanel(image); // Добавляем изображение в панель
-            }
-
-            // Меняем иконку загрузки, если изображения есть
-            if (studentImages.Any())
-            {
-                // Здесь можно изменить иконку, например, поменять цвет или добавить галочку
+                AddImageToPanel(image);
             }
         }
 
-        private void AddImageToPanel(Image imageEntity)
+        private void AddImageToPanel(ImageDocument image)
         {
-            // Получаем данные изображения из сущности Image
-            var imageBytes = imageEntity.Image1;
-
-            // Используем WPF-контрол Image
-            var imageControl = new System.Windows.Controls.Image
+            // Создание элемента изображения
+            var imageControl = new Image
             {
-                Source = LoadBitmapImage(imageBytes), // Устанавливаем источник изображения
-                Width = 100, // Ширина изображения
-                Height = 100, // Высота изображения
-                Margin = new Thickness(5), // Отступы
-                Cursor = System.Windows.Input.Cursors.Hand // Изменяем курсор при наведении
+                Source = LoadImage(image.ImageDoc),
+                Width = 100,
+                Height = 100,
+                Margin = new Thickness(5),
+                Cursor = Cursors.Hand,
+                Tag = image.ID
             };
 
-            // Обработчик клика на изображение для открытия ImageWindow
-            imageControl.MouseDown += (s, e) =>
+            imageControl.MouseLeftButtonDown += (s, e) =>
             {
-                var imageWindow = new ImageWindow(imageBytes);
-                imageWindow.ShowDialog();
-            };
-
-            var deleteButton = new System.Windows.Controls.Button
-            {
-                Content = "Удалить", // Текст на кнопке
-                Tag = imageEntity.ID, // Сохраняем ID изображения для удаления
-                Margin = new Thickness(5) // Отступы
-            };
-
-            // Обработчик нажатия на кнопку "Удалить"
-            deleteButton.Click += (s, e) =>
-            {
-                // Диалог с подтверждением удаления
-                var result = MessageBox.Show(
-                    "Вы действительно хотите удалить изображение?",
-                    "Подтверждение удаления",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Question);
-
-                if (result == MessageBoxResult.Yes)
+                var window = new ImageWindow(image.ImageDoc, image.ID);
+                if (window.ShowDialog() == true)
                 {
-                    DeleteImage(imageEntity.ID); // Удаляем изображение
+                    LoadStudentImages(); // Обновляем список после удаления
                 }
             };
 
-            var stackPanel = new System.Windows.Controls.StackPanel
-            {
-                Orientation = System.Windows.Controls.Orientation.Vertical // Ориентация панели
-            };
-            stackPanel.Children.Add(imageControl); // Добавляем изображение в панель
-            stackPanel.Children.Add(deleteButton); // Добавляем кнопку в панель
-
-            ImagesPanel.Children.Add(stackPanel); // Добавляем панель в ImagesPanel
+            ImagesPanel.Children.Add(imageControl);
         }
 
-        private void DeleteImage(int imageId)
+        private static BitmapImage LoadImage(byte[] imageData)
         {
-            // Находим изображение в таблице Image
-            var imageToDelete = App.context.Image.FirstOrDefault(img => img.ID == imageId);
-            if (imageToDelete != null)
+            var bitmap = new BitmapImage();
+            using (var stream = new MemoryStream(imageData))
             {
-                // Находим связь в таблице StudentImage
-                var studentImageToDelete = App.context.StudentImage.FirstOrDefault(si => si.ImageID == imageToDelete.ID);
-                if (studentImageToDelete != null)
-                {
-                    // Удаляем связь из таблицы StudentImage
-                    App.context.StudentImage.Remove(studentImageToDelete);
-                    // Удаляем изображение из таблицы Image
-                    App.context.Image.Remove(imageToDelete);
-                    // Сохраняем изменения в базе данных
-                    App.context.SaveChanges();
-                }
+                bitmap.BeginInit();
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.StreamSource = stream;
+                bitmap.EndInit();
             }
-
-            // Перезагружаем изображения
-            LoadImages();
+            return bitmap;
         }
 
-        private void DeleteButton_Click(object sender, RoutedEventArgs e)
-        {
-            var button = sender as Button;
-            if (button != null)
-            {
-                var imageId = (int)button.Tag; // Получаем ID изображения из Tag кнопки
-
-                // Находим изображение в таблице Image
-                var imageToDelete = App.context.Image.FirstOrDefault(img => img.ID == imageId);
-                if (imageToDelete != null)
-                {
-                    // Находим связь в таблице StudentImage
-                    var studentImageToDelete = App.context.StudentImage.FirstOrDefault(si => si.ImageID == imageToDelete.ID);
-                    if (studentImageToDelete != null)
-                    {
-                        // Удаляем связь из таблицы StudentImage
-                        App.context.StudentImage.Remove(studentImageToDelete);
-                        // Удаляем изображение из таблицы Image
-                        App.context.Image.Remove(imageToDelete);
-                        // Сохраняем изменения в базе данных
-                        App.context.SaveChanges();
-                    }
-                }
-
-                // Перезагружаем изображения
-                LoadImages();
-            }
-        }
-
-        private BitmapImage LoadBitmapImage(byte[] imageData)
-        {
-            if (imageData == null || imageData.Length == 0) return null;
-            var bitmapImage = new BitmapImage();
-            bitmapImage.BeginInit();
-            bitmapImage.StreamSource = new MemoryStream(imageData);
-            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-            bitmapImage.EndInit();
-            return bitmapImage;
-        }
         private void AddBtn_Click(object sender, RoutedEventArgs e)
         {
-            var openFileDialog = new OpenFileDialog
+            var openFileDialog = new Microsoft.Win32.OpenFileDialog
             {
-                Filter = "Image files (*.png;*.jpeg;*.jpg)|*.png;*.jpeg;*.jpg|All files (*.*)|*.*"
+                Filter = "Image files (*.jpg, *.jpeg, *.png)|*.jpg;*.jpeg;*.png"
             };
 
             if (openFileDialog.ShowDialog() == true)
             {
-                var filePath = openFileDialog.FileName;
-                var imageData = File.ReadAllBytes(filePath);
-
-                // Открываем окно ImageWindow с выбранным изображением
-                var imageWindow = new ImageWindow(imageData);
-                if (imageWindow.ShowDialog() == true)
+                try
                 {
-                    // Пользователь нажал "Удалить", удаляем изображение из базы данных
-                    DeleteImage(imageWindow.ImageData);
-                }
-                else
-                {
-                    // Пользователь закрыл окно, сохраняем изображение в базу данных
-                    SaveImage(imageData);
-                }
+                    // Проверка, что для студента уже есть не более 10 изображений (если нужно)
+                    if (studentImages.Count >= 10)
+                    {
+                        MessageBox.Show("Достигнут лимит изображений (10 шт.)");
+                        return;
+                    }
 
-                LoadImages(); // Перезагрузка изображений
-            }
-        }
-
-        private void SaveImage(byte[] imageData)
-        {
-            var student = SelectedStudentHelper.selectedStudent;
-
-            // Создаем новую запись в таблице Image
-            var newImage = new Image { Image1 = imageData };
-            App.context.Image.Add(newImage);
-            App.context.SaveChanges();
-
-            // Связываем изображение со студентом в таблице StudentImage
-            var studentImage = new StudentImage
-            {
-                ImageID = newImage.ID,
-                StudentID = student.ID
-            };
-            App.context.StudentImage.Add(studentImage);
-            App.context.SaveChanges();
-        }
-
-        private void DeleteImage(byte[] imageData)
-        {
-            var student = SelectedStudentHelper.selectedStudent;
-
-            // Находим изображение в таблице Image
-            var imageToDelete = App.context.Image.FirstOrDefault(img => img.Image1 == imageData);
-            if (imageToDelete != null)
-            {
-                // Находим связь в таблице StudentImage
-                var studentImageToDelete = App.context.StudentImage.FirstOrDefault(si => si.ImageID == imageToDelete.ID);
-                if (studentImageToDelete != null)
-                {
-                    App.context.StudentImage.Remove(studentImageToDelete);
-                    App.context.Image.Remove(imageToDelete);
+                    byte[] imageData = File.ReadAllBytes(openFileDialog.FileName);
+                    App.context.ImageDocument.Add(new ImageDocument { ImageDoc = imageData });
                     App.context.SaveChanges();
+
+                    var newStudentImage = new StudentImage
+                    {
+                        StudentID = currentStudent.ID,
+                        ImageID = App.context.ImageDocument.Max(i => i.ID)
+                    };
+                    App.context.StudentImage.Add(newStudentImage);
+                    App.context.SaveChanges();
+
+                    LoadStudentImages(); // Обновляем панель
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка загрузки изображения: {ex.Message}");
                 }
             }
-        }
-
-        private void ViewImage_Click(object sender, RoutedEventArgs e)
-        {
-            var button = sender as Button;
-            var imageData = button.Tag as byte[];
-
-            // Открываем окно ImageWindow для просмотра изображения
-            var imageWindow = new ImageWindow(imageData);
-            imageWindow.ShowDialog();
         }
 
         private void UpdatePassportIcon()

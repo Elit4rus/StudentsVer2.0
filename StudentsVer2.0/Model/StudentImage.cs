@@ -18,7 +18,7 @@ namespace StudentsVer2._0.Model
         public int ImageID { get; set; }
         public int StudentID { get; set; }
     
-        public virtual Image Image { get; set; }
+        public virtual ImageDocument ImageDocument { get; set; }
         public virtual Student Student { get; set; }
     }
 }

@@ -93,7 +93,6 @@
                 <Border Grid.Row="2" VerticalAlignment="Bottom" CornerRadius="1" Margin="30 0" Background="#5367D3" Height="2" Width="155" HorizontalAlignment="Left"/>
                 <Border Grid.Row="5" VerticalAlignment="Bottom" CornerRadius="1" Margin="30 0" Background="Black" Height="2"/>
                 <StackPanel Grid.Row="4" Orientation="Horizontal">
-                    
                     <Border x:Name="PassportBorder" CornerRadius="3" Margin="30 0" Width="201" HorizontalAlignment="Left" Height="170">
                         <Border.Style>
                             <Style TargetType="Border">
@@ -133,7 +132,6 @@
                             <TextBlock x:Name="PassportTextTbl" Grid.Row="3" Foreground="#5367D3" FontSize="17" Text="Заполнить паспорт" Margin="30 0" TextWrapping="Wrap" TextAlignment="Center"/>
                         </Grid>
                     </Border>
-
                     <Border x:Name="MilitaryCertificateBorder" CornerRadius="3" Margin="30 0" Width="201" HorizontalAlignment="Left" Height="170">
                         <Border.Style>
                             <Style TargetType="Border">
@@ -173,7 +171,6 @@
                             <TextBlock x:Name="MilitaryCertificateTbl" Grid.Row="3" Foreground="#5367D3" FontSize="17" Text="Заполнить приписное св-во" Margin="30 0" TextWrapping="Wrap" TextAlignment="Center"/>
                         </Grid>
                     </Border>
-
                     <Border x:Name="INNBorder" CornerRadius="3" Margin="30 0" Width="201" HorizontalAlignment="Left" Height="170">
                         <Border.Style>
                             <Style TargetType="Border">
@@ -213,7 +210,6 @@
                             <TextBlock x:Name="INNTbl" Grid.Row="3" Foreground="#5367D3" FontSize="17" Text="Заполнить ИНН" Margin="30 0" TextWrapping="Wrap" TextAlignment="Center"/>
                         </Grid>
                     </Border>
-
                     <Border x:Name="InsuranceBorder" CornerRadius="3" Margin="30 0" Width="201" HorizontalAlignment="Left" Height="170">
                         <Border.Style>
                             <Style TargetType="Border">
@@ -253,7 +249,6 @@
                             <TextBlock x:Name="InsuranceTbl" Grid.Row="3" Foreground="#5367D3" FontSize="17" Text="Заполнить СНИЛС" Margin="30 0" TextWrapping="Wrap" TextAlignment="Center"/>
                         </Grid>
                     </Border>
-
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="2">
@@ -262,15 +257,44 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="3"/>
                     <RowDefinition Height="1*"/>
+                    <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="Документы" Grid.Row="1" Margin="36 0" FontSize="20"/>
                 <Border Grid.Row="2" VerticalAlignment="Bottom" CornerRadius="1" Margin="30 0" Background="#5367D3" Height="2" Width="116" HorizontalAlignment="Left"/>
                 <!-- Место для загрузки картинок -->
                 <Grid Grid.Row="3" Margin="30">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ScrollViewer VerticalScrollBarVisibility="Hidden">
                         <WrapPanel x:Name="ImagesPanel" Width="1860" Height="376.4" HorizontalAlignment="Left" VerticalAlignment="Top" />
                     </ScrollViewer>
-                    <Button x:Name="AddBtn" Content="Добавить изображение" Click="AddBtn_Click"  HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 30 30">
+                        <Button x:Name="AddBtn" Content="Добавить изображение" Click="AddBtn_Click"  Height="40" FontSize="19" Width="240" Margin="0 0 10 0">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Foreground" Value="Black"/>
+                                    <Setter Property="FontFamily" Value="Roboto"/>
+                                    <Setter Property="BorderBrush" Value="Black"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}" CornerRadius="5" BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}">
+                                                    <ContentPresenter Margin="0 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#5367D3"/>
+                                            <Setter Property="Foreground" Value="White"/>
+                                            <Setter Property="FontWeight" Value="Medium"/>
+                                            <Setter Property="BorderBrush" Value="#5367D3"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </StackPanel>
                 </Grid>
             </Grid>
         </Grid>
