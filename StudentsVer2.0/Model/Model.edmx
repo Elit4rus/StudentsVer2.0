@@ -25,6 +25,7 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ImageDoc" Type="varbinary(max)" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="INN">
           <Key>
@@ -393,6 +394,7 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ImageDoc" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="StudentImage" Relationship="StudentsDBModel.FK_StudentImage_Image" FromRole="ImageDocument" ToRole="StudentImage" />
         </EntityType>
         <EntityType Name="INN">
@@ -662,6 +664,7 @@
           <EntitySetMapping Name="ImageDocument">
             <EntityTypeMapping TypeName="StudentsDBModel.ImageDocument">
               <MappingFragment StoreEntitySet="ImageDocument">
+                <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="ImageDoc" ColumnName="ImageDoc" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>

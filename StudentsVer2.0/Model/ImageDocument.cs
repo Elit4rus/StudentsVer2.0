@@ -22,6 +22,7 @@ namespace StudentsVer2._0.Model
     
         public int ID { get; set; }
         public byte[] ImageDoc { get; set; }
+        public string Title { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StudentImage> StudentImage { get; set; }

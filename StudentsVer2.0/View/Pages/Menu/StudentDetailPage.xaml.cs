@@ -36,7 +36,6 @@ namespace StudentsVer2._0.View.Pages.Menu
             SurnameTbl.Text = student.Surname;
             NameTbl.Text = student.Name;
             PatronymicTbl.Text = student.Patronymic ?? "Нет данных"; // Если отчество отсутствует
-            GroupTbl.Text = groupTitle;
 
             if (SelectedStudentHelper.selectedStudent.PassportID != null) UpdatePassportIcon();
             if (SelectedStudentHelper.selectedStudent.MilitaryCertificateID != null) UpdateMilitaryCertificateIcon();
@@ -69,8 +68,8 @@ namespace StudentsVer2._0.View.Pages.Menu
             var imageControl = new Image
             {
                 Source = LoadImage(image.ImageDoc),
-                Width = 100,
-                Height = 100,
+                Width = 200,
+                Height = 200,
                 Margin = new Thickness(5),
                 Cursor = Cursors.Hand,
                 Tag = image.ID
